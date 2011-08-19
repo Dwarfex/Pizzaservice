@@ -1,16 +1,14 @@
 <?php
 
-
-
-if(isset($_GET['delkat'])) {
-	$belagkatID = $_GET['belagkatID'];
+if(isset($_GET['delete'])) {
+	$belagkatID = $_GET['delete'];
 	
 	safe_query("DELETE FROM ".PREFIX."belagkat WHERE ID='$belagkatID'");
 	//evtl auch belaege loeschen, die zu der kategorie gehoeren?
 	
 }
 
-elseif(isset($_POST['savekat'])) {
+elseif(isset($_POST['save'])) {
 	$belagkatname = $_POST['belagkatname'];
 	
 	safe_query("INSERT INTO ".PREFIX."belagkat ( name )
@@ -18,21 +16,19 @@ elseif(isset($_POST['savekat'])) {
 	
 }
 
-elseif(isset($_POST['saveeditkat'])) {
-	$belagkatname = $_POST['belagkatname'];
-	$belagkatID = $_POST['belagkatID'];
+elseif(isset($_POST['saveedit'])) {
+	$belagkatname = $_POST['name'];
+	$belagkatID = $_POST['ID'];
 	
 	safe_query("UPDATE ".PREFIX."belagkat SET name='$belagkatname' WHERE ID='$belagkatID' ");
-	
 }
 
 if(isset($_GET['action'])) {
-	if($_GET['action']=="addkat") {
-    
-echo'<h1>Belag Kategorie hinzuf&uuml;gen</h1>';
-    
-    
-    
+	
+	if($_GET['action']=="add") {
+	  
+    echo'<h1>Belag Kategorie hinzuf&uuml;gen</h1>';
+
     echo '<form method="post" action="index.php?site=belagkat" id="post" name="post" enctype="multipart/form-data" ">
     <table width="100%" border="0" cellspacing="1" cellpadding="3">
       <tr>
@@ -41,15 +37,36 @@ echo'<h1>Belag Kategorie hinzuf&uuml;gen</h1>';
       </tr>
       
       <tr>
-        <td colspan="2"><input type="submit" name="savekat" value="Kategorie hinzuf&uuml;gen" /></td>
+        <td colspan="2"><input type="submit" name="save" value="Kategorie hinzuf&uuml;gen" /></td>
       </tr>
     </table>
     </form>';
-	}
+  } 
+  elseif($_GET['action']=="edit") {
+  		
+    $katq = mysql_query("SELECT ID,name FROM belagkat WHERE ID=". $_GET["ID"] . "");
+    $kat = mysql_fetch_array($katq);
+    
+    echo'<h1>Belag Kategorie &auml;ndern</h1>';
 
-	elseif($_GET['action']=="editcat") {
-
-		$faqcatID = $_GET['faqcatID'];
+    echo '<form method="post" action="index.php?site=belagkat" id="post" name="post" enctype="multipart/form-data" ">
+    <table width="100%" border="0" cellspacing="1" cellpadding="3">
+      <tr>
+        <td width="15%"><b>Name der Kategorie</b></td>
+        <td width="85%"><input type="text" name="name" size="60" value="'. $kat["name"] .'" />
+        <input type="hidden" name="ID" value="'. $kat["ID"] .'" /></td>
+      </tr>
+      
+      <tr>
+        <td colspan="2"><input type="submit" name="saveedit" value="&auml;ndern" /></td>
+      </tr>
+    </table>
+    </form>';
+    
+    
+    
+    
+    /*$faqcatID = $_GET['faqcatID'];
 
 		$ergebnis=safe_query("SELECT * FROM ".PREFIX."faq_categories WHERE faqcatID='$faqcatID'");
 		$ds=mysql_fetch_array($ergebnis);
@@ -96,7 +113,23 @@ echo'<h1>Belag Kategorie hinzuf&uuml;gen</h1>';
         <td colspan="2"><input type="hidden" name="captcha_hash" value="'.$hash.'" /><input type="hidden" name="faqcatID" value="'.$faqcatID.'" /><input type="submit" name="saveeditcat" value="'.$_language->module['edit_category'].'" /></td>
       </tr>
     </table>
-    </form>';
-	}
+    </form>'; */
+	
+  }
+}
+else{ // standard aufruf wenn action nicht gesetzt
+    
+    echo '<a href="?site=belagkat&action=add">Neue Kategorie hinzuf&uuml;gen</a>';
+    
+    $katq = mysql_query("SELECT ID,name FROM belagkat");
+    echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';
+    while($kat = mysql_fetch_array($katq)){
+     echo '<tr>
+              <td width="15%">' . $kat["name"] . '</td>
+              <td width="5%"><a href="?site=belagkat&action=edit&ID=' . $kat["ID"] . '"> edit</a></td>
+              <td align="left"><a href="?site=belagkat&delete=' . $kat["ID"] . '"> delete</a></td>
+          </tr>';                          
+    }
+    echo '</table>';
 }
 ?>
