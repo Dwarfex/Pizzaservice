@@ -4,7 +4,7 @@ if(isset($_GET['delete'])) {
 	$ID = $_GET['delete'];
 	
 	safe_query("DELETE FROM ".PREFIX."produkt WHERE ID='$ID'");
-	//evtl auch belaege loeschen, die zu der kategorie gehoeren?
+	safe_query("DELETE FROM ".PREFIX."belagzuprodukt WHERE produkt_ID='$ID'");
 	
 }
 
@@ -67,10 +67,32 @@ elseif(isset($_GET['delete_preis'])) {
 }
 
 elseif(isset($_POST['edit_belag'])) {
+	$produkt_ID = $_POST['produkt_ID'];
+  $formular = $_POST['belag_ID']; //checkboxarray
 	
-	// heeeeeeeeeeeeeelp :D
+    $belagq = mysql_query("SELECT belag_ID FROM belagzuprodukt WHERE produkt_ID='$produkt_ID'");
+    $dbout = array();
+    $i = 0;
+    while($belag = mysql_fetch_array($belagq)){
+       $dbout[$i] = $belag['belag_ID'];
+       $i++;    
+    }
+  
+  $insert = array_values(array_diff($formular,$dbout));
+  $delete = array_values(array_diff($dbout,$formular));
+  
+  foreach ($insert as $belag_ID) {
+     safe_query("INSERT INTO ".PREFIX."belagzuprodukt (produkt_ID,belag_ID)
+	               values('$produkt_ID','$belag_ID')");
+  }
+  
+  foreach ($delete as $belag_ID) {
+     safe_query("DELETE FROM ".PREFIX."belagzuprodukt WHERE produkt_ID='$produkt_ID' AND belag_ID='$belag_ID'");
+  } 
 }
 
+
+//// PRODUKT HINZUFUEGEN
 
 if(isset($_GET['action'])) {
 	if($_GET['action']=="add") {
@@ -106,6 +128,9 @@ if(isset($_GET['action'])) {
     </table>
     </form>';
 	}
+
+
+///// PRODUKT EDITIEREN
 
 	elseif($_GET['action']=="edit") {
 
@@ -143,6 +168,9 @@ if(isset($_GET['action'])) {
       </tr>
     </table>
     </form>';
+
+
+///// PREIS EDITIEREN
       
       echo'<h1>Preis editieren</h1>';
       echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
@@ -173,6 +201,8 @@ if(isset($_GET['action'])) {
       </tr>
     </table>
     </form>';
+
+///// PREIS HINZUFUEGEN
       
       echo'<h3>Preis hinzuf&uuml;gen</h3>';
       echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
@@ -193,121 +223,64 @@ if(isset($_GET['action'])) {
             </tr>       
     </table>
     </form>';
-    
-    echo '<h1>Zutaten</h1>';
-    $katq = mysql_query("SELECT * FROM belagkat");
-   echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
-         <table width="100%" border="0" cellspacing="1" cellpadding="3">
-         <input type="hidden" name="produkt_ID" value="'. $produkt['ID'] .'" />';
-   while($kat = mysql_fetch_array($katq)){
-     echo "<tr>
-            <td><h3>" . $kat["name"] . "</h3></td>
-          </tr>";
-                             
-      $produktq = mysql_query("SELECT * FROM belag WHERE kat_ID=" . $kat["ID"] . "");
-      while($belag = mysql_fetch_array($produktq)){
-        echo '<tr>
-                <td><input type="checkbox" name="belag_ID[]" value="'. $belag['ID'] .'">' . $belag["name"] . '</td>
-              </tr>';    
-      }
-  }
-  echo' <tr>
-        <td><input type="submit" name="edit_belag" value="edit" /></td>
-      </tr>
-    </table>
-    </form>';
-      
-      
-      /*echo '<form method="post" action="index.php?site=produkt" id="post" name="post" enctype="multipart/form-data" ">
-       <table width="100%" border="1" cellspacing="1" cellpadding="3">';
-      
-      $produktsizeq = mysql_query("SELECT ID,size FROM produktpreis WHERE produkt_ID=" . $produkt["ID"] . "");
-      while($produktsize = mysql_fetch_array($produktsizeq)){
-      echo '<tr>
-              <td width="15%"><b>Gr&ouml;sse</b></td>
-              <td width="85%"><select name="size" size="1">';
-        
-                          $sizeq = mysql_query("SELECT size,name FROM size");
-                          while($size = mysql_fetch_array($sizeq)){                
-                          
-                            echo '<option'; 
-                            if($size["size"] == $produktsize["size"]) echo  " selected ";
-                            echo ' value='. $size["size"] . '>'. $size["name"] . '</option>'; 
-                          }
-                    echo '</select></td>
-            </tr>   ';
-      }
-      
-      $produktpreisq = mysql_query("SELECT ID,preis FROM produktpreis WHERE produkt_ID=" . $produkt["ID"] . "");
-  
-      while($produktpreis = mysql_fetch_array($produktpreisq)){
-      echo '<tr>
-              <td width="15%"><b>Preis</b></td>
-              <td width="85%"><input type="text" name="comment" size="60" value="'. $produktpreis["preis"] .'" /></td>
-            </tr>';
-      }  
-       
-      echo '<tr>
-        <td colspan="2"><input type="submit" name="edit_size" value="Gr&ouml;ssen editieren" /></td>
-      </tr>
-    </table>
-    </form>'; */
-  
-  
-  
-  /*	$faqcatID = $_GET['faqcatID'];
 
-		$ergebnis=safe_query("SELECT * FROM ".PREFIX."faq_categories WHERE faqcatID='$faqcatID'");
-		$ds=mysql_fetch_array($ergebnis);
+/////// ZUTATEN
     
-    $CAPCLASS = new Captcha;
-    $CAPCLASS->create_transaction();
-    $hash = $CAPCLASS->get_hash();
+    //auslesen der BelagZuProdukt Tabelle um checkboxen aktiv zu setzen
+    $checkq = mysql_query("SELECT belag_ID FROM belagzuprodukt WHERE produkt_ID=" . $produkt["ID"] . "");
+    $checkarr = array();
+    $i = 0;
+    while($check = mysql_fetch_array($checkq)){
+       $checkarr[$i] = $check['belag_ID'];
+       $i++;    
+    }
     
-    $_language->read_module('bbcode', true);
     
-    eval ("\$addbbcode = \"".gettemplate("addbbcode", "html", "admin")."\";");
-    eval ("\$addflags = \"".gettemplate("flags_admin", "html", "admin")."\";");
     
-    echo'<h1>&curren; <a href="admincenter.php?site=faqcategories" class="white">'.$_language->module['faq_categories'].'</a> &raquo; '.$_language->module['edit_category'].'</h1>';
-
-    echo '<script language="JavaScript" type="text/javascript">
-					<!--
-						function chkFormular() {
-							if(!validbbcode(document.getElementById(\'message\').value, \'admin\')){
-								return false;
-							}
-						}
-					-->
-				</script>';
-    
-    echo '<form method="post" action="admincenter.php?site=faqcategories" id="post" name="post" onsubmit="return chkFormular();">
-    <table width="100%" border="0" cellspacing="1" cellpadding="3">
-      <tr>
-        <td width="15%"><b>'.$_language->module['category_name'].'</b></td>
-        <td width="85%"><input type="text" name="faqcatname" size="60" value="'.htmlspecialchars($ds['faqcatname']).'" /></td>
-      </tr>
-      <tr>
-        <td colspan="2"><b>'.$_language->module['description'].'</b>
-	        <table width="99%" border="0" cellspacing="0" cellpadding="0">
-			      <tr>
-			        <td valign="top">'.$addbbcode.'</td>
-			        <td valign="top">'.$addflags.'</td>
-			      </tr>
-			    </table>
-	        <br /><textarea id="message" rows="10" cols="" name="message" style="width: 100%;">'.htmlspecialchars($ds['description']).'</textarea>
-	      </td>
-      </tr>
-      <tr>
-        <td colspan="2"><input type="hidden" name="captcha_hash" value="'.$hash.'" /><input type="hidden" name="faqcatID" value="'.$faqcatID.'" /><input type="submit" name="saveeditcat" value="'.$_language->module['edit_category'].'" /></td>
-      </tr>
-    </table>
-    </form>'; */
+    $produkt_ID = $produkt["ID"];
+    $katq = mysql_query("SELECT belagkat.ID,belagkat.name 
+      FROM belagkat,belagkatzuproduktkat,produktkat,produkt 
+      WHERE produkt.ID ='$produkt_ID'
+      AND produkt.kat_ID = produktkat.ID
+      AND produktkat.ID = belagkatzuproduktkat.produktkat_ID
+      AND belagkatzuproduktkat.belagkat_ID = belagkat.ID
+      ORDER BY belagkat.ID");
+   
+    if(mysql_num_rows($katq)>=1){        
+       echo '<h1>Zutaten</h1>
+             <form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
+             <table width="100%" border="0" cellspacing="1" cellpadding="3">
+             <input type="hidden" name="produkt_ID" value="'. $produkt['ID'] .'" />';
+         while($kat = mysql_fetch_array($katq)){
+             echo "<tr>
+                    <td><h3>" . $kat["name"] . "</h3></td>
+                  </tr>";
+                                     
+              $produktq = mysql_query("SELECT * FROM belag WHERE kat_ID=" . $kat["ID"] . "");
+              while($belag = mysql_fetch_array($produktq)){
+                
+                if(in_array($belag['ID'],$checkarr)) $checked = " checked ";
+                else $checked="";
+                
+                echo '<tr>
+                        <td><input type="checkbox" name="belag_ID[]" value="'. $belag['ID'] .'" '. $checked. '>' . $belag["name"] . '</td>
+                      </tr>';    
+              }
+        }
+        echo' <tr>
+              <td><input type="submit" name="edit_belag" value="edit" /></td>
+            </tr>
+          </table>
+          </form>';
+    }
+   
+  
+      
 	}
 }
 else{ // standard auflistung aller Beläge bei keiner action
 
-  echo '<a href="?site=produkt&action=add">Neuen Produkt anlegen</a>';
+  echo '<a href="?site=produkt&action=add">Neues Produkt anlegen</a>';
   
   $katq = mysql_query("SELECT * FROM produktkat");
   echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';

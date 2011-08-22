@@ -6,9 +6,7 @@ if(isset($_POST['edit_size'])) {
         echo $_POST['produktpreis_ID'][$i] . " size: ";
         echo $_POST['size'][$i] . " preis: ";
         echo $_POST['preis'][$i] . " <br>";
-    } 
-	
-	
+    } 	
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -28,31 +26,17 @@ if(isset($_POST['edit_size'])) {
 <body>
 <?php
 
- echo '<form method="post" action="test.php" id="post" name="post" enctype="multipart/form-data" ">
-       <table width="100%" border="1" cellspacing="1" cellpadding="3">';
-      
-      $i = 1;
-      while($i < 3){
-      echo '<tr>
-              <td width="15%">
-              <input type="hidden" name="produktpreis_ID[]" value="'. $i .'" />
-              <select name="size[]" size="1">
-                              <option value="4">small</option>
-                              <option value="5">medium</option>
-                              <option value="6">large</option>
-                          
-                    </select></td>
-                    <td width="85%"><input type="text" name="preis[]" size="10" value="' . $i . '" /> Euro</td>
-            </tr>   ';
-      $i++;
-      }
-      
-      
-      echo '<tr>
-        <td colspan="2"><input type="submit" name="edit_size" value="Preis editieren" /></td>
-      </tr>
-    </table>
-    </form>';
+ $db = array("1","2","3");
+ $box = array("2","4");
+ 
+ $insert = array_values(array_diff($box,$db));
+ $delete = array_values(array_diff($db,$box));
+
+ 
+ echo "zum insert: ";
+ print_r($insert);
+ echo "<br> zum delete: ";
+ print_r($delete);
 
 ?>
 
