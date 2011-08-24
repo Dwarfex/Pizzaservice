@@ -13,12 +13,6 @@ function sql_value($value) {
   return $value;
 }
 
-function assign_array($value=""){
-  if(empty($value)){
-    return array();
-  }                          
-  return $value;
-}
 
 
 function gettemplate($template,$endung="html", $calledfrom="root") {

@@ -17,12 +17,17 @@ elseif(isset($_POST['save'])) {
   $_GET['ID'] = mysql_insert_id();    
   $ID = $_GET['ID'];                //Wird an action['edit'] übergeben
    
-  // Die ProduktPreis Tabelle wird mit den jeweiligen Größen der Produktkategorie gefüllt 
-  $sizeq = mysql_query("SELECT size FROM size WHERE produktkat_ID='$kat_ID'");
+  // Die ProduktPreis Tabelle wird mit den jeweiligen Größen der Produktkategorie gefüllt, 
+  // jedoch nur wenn kein standardpreis in der size Tabelle vorhanden ist. 
+  $sizeq = mysql_query("SELECT size,def_preis FROM size WHERE produktkat_ID='$kat_ID'");
   while($size = mysql_fetch_array($sizeq)){                
     $foo = $size['size'];
-    safe_query("INSERT INTO ".PREFIX."produktpreis (produkt_ID,size)
-	            values('$ID','$foo')");                         
+    if(!isset($size['def_preis'])){
+       
+       safe_query("INSERT INTO ".PREFIX."produktpreis (produkt_ID,size)
+	            values('$ID','$foo')");
+    }
+                             
   }  
 }
 
@@ -256,7 +261,8 @@ if(isset($_GET['action'])) {
 ///// PREIS HINZUFUEGEN
       
       $sizeq = mysql_query("SELECT size.size,size.name FROM size 
-                            WHERE produktkat_ID ='".$produkt['kat_ID']."'
+                            WHERE size.def_preis IS NULL
+                            AND produktkat_ID ='".$produkt['kat_ID']."'
                             AND NOT EXISTS(SELECT produktpreis.size FROM produktpreis
                             WHERE produkt_ID ='".$produkt['ID']."'
                             AND produktpreis.size = size.size)  ");

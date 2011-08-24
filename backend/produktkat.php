@@ -73,10 +73,11 @@ elseif(isset($_POST['save_size'])) {
 	$produktkat_ID = $_POST['produktkat_ID'];
   $name = $_POST['size_name'];
 	$comment = $_POST['size_comment'];
-	$preis_val = $_POST['preis_val'];
+	$preis_val = $_POST['preis_val']; // array
+	$def_preis = $_POST['size_def_preis'];
 	
-	safe_query("INSERT INTO ".PREFIX."size ( name,produktkat_ID,comment )
-	            values( '$name','$produktkat_ID','$comment' )");
+	safe_query("INSERT INTO ".PREFIX."size ( name,produktkat_ID,comment,def_preis )
+	            values( '$name','$produktkat_ID','$comment',". sql_value($def_preis)." )");
 	
   $size_ID = mysql_insert_id();
   
@@ -94,15 +95,15 @@ elseif(isset($_POST['edit_size'])) {
    $size_ID  = $_POST['size_ID']; // array
    $size_name = $_POST['size_name']; // array
    $size_comment = $_POST['size_comment']; // array
-   $preis_val = $_POST['preis_val'];
+   $size_def_preis =$_POST['size_def_preis']; // array
+   $preis_val = $_POST['preis_val']; // array 2-dimensionales
    
    for($i=0; $i<count($size_ID); $i++){
-     safe_query("UPDATE ".PREFIX."size SET name='$size_name[$i]', comment='$size_comment[$i]' WHERE size='$size_ID[$i]' "); 
+     safe_query("UPDATE ".PREFIX."size SET name='$size_name[$i]', comment='$size_comment[$i]', def_preis=". sql_value($size_def_preis[$i]) ." WHERE size='$size_ID[$i]' "); 
    } 
 
    for($i=0; $i<count($preis_val); $i++){
      $size = $size_ID[$i];
-     echo ' '. $size . ': ';
      for($j=0; $j<count($preis_val[$i]); $j++){
        $value = $j+1;
        $preis = $preis_val[$i][$j];
@@ -219,12 +220,13 @@ if(isset($_GET['action'])) {
        
       $sizeq = mysql_query("SELECT * FROM size WHERE produktkat_ID=" . $produktkat["ID"] . "");
        if(mysql_num_rows($sizeq) >= 1){
-           echo'<h1></h1>';
+           
            echo '<form method="post" action="index.php?site=produktkat&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
                  <table width="100%" border="1" cellspacing="1" cellpadding="3">
                    <tr>
                      <td><b>Gr&ouml;sse</b></td>
                      <td><b>Comment</b></td>
+                     <td><b>Standardpreis</b></td>
                      <td><b>Belagvalues</b></td>
                    </tr>';
               $i = 0;
@@ -233,6 +235,7 @@ if(isset($_GET['action'])) {
                             <td width="15%"><input type="hidden" name="size_ID[]" value="'. $size['size'] .'" />
                             <input type="text" name="size_name[]" size="10" value="'. $size["name"] .'" /></td>
                             <td width="15%"><input type="text" name="size_comment[]" size="10" value="'. $size["comment"] .'" /></td>
+                            <td width="15%"><input type="text" name="size_def_preis[]" size="10" value="'. $size["def_preis"] .'" /></td>
                             <td width="70%">';
                             $valueq = mysql_query("SELECT * FROM belagpreis WHERE size=" . $size["size"] . "");
                              if(mysql_num_rows($valueq) >= 1){ 
@@ -246,7 +249,7 @@ if(isset($_GET['action'])) {
               $i++;
               }
             echo' <tr>
-              <td colspan="3"><input type="submit" name="edit_size" value="Gr&ouml;sse editieren" /></td>
+              <td colspan="4"><input type="submit" name="edit_size" value="Gr&ouml;sse editieren" /></td>
             </tr>
           </table>
           </form>';      
@@ -264,10 +267,11 @@ if(isset($_GET['action'])) {
               Name <input type="text" name="size_name" size="10" /></td>
                     
             <td width="15%">Comment <input type="text" name="size_comment" size="10" /></td>
+            <td width="15%">Standardpreis <input type="text" name="size_def_preis" size="10" /></td>
             <td width="45%">Val1 <input type="text" name="preis_val[]" size="10" />
             Val2 <input type="text" name="preis_val[]" size="10" />
             Val3 <input type="text" name="preis_val[]" size="10" /></td>
-            <td width="40%"><input type="submit" name="save_size" value="hinzuf&uuml;gen" /></td>       
+            <td width="25%"><input type="submit" name="save_size" value="hinzuf&uuml;gen" /></td>       
             </tr>       
     </table>
     </form>';
