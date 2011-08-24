@@ -1,3 +1,9 @@
+### Anzahl eines Bestimmten Belages zu einer Produktbestellung
+SELECT belag_ID, count(*) AS anzahl FROM belagzubestellung
+WHERE produktzubestell_ID = 1
+GROUP BY belag_ID
+
+
 ### Alle Produkte einer Kategorie (Pizza)
 
 SELECT produktkat.name, 

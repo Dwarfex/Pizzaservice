@@ -3,9 +3,7 @@
 if(isset($_GET['delete'])) {
 	$ID = $_GET['delete'];
 	
-	safe_query("DELETE FROM ".PREFIX."belag WHERE ID='$ID'");
-	//evtl auch belaege loeschen, die zu der kategorie gehoeren?
-	
+	safe_query("DELETE FROM ".PREFIX."belag WHERE ID='$ID'");	
 }
 
 elseif(isset($_POST['save'])) {
@@ -44,7 +42,7 @@ if(isset($_GET['action'])) {
       </tr>
       <tr>
         <td width="15%"><b>Kategorie</b></td>
-        <td width="85%"><select name="kat_ID" size="3">';
+        <td width="85%"><select name="kat_ID" size="1">';
         
                           $katq = mysql_query("SELECT ID,name FROM belagkat");
                           while($kat = mysql_fetch_array($katq)){                
@@ -54,7 +52,8 @@ if(isset($_GET['action'])) {
        </tr>
        <tr>
         <td width="15%"><b>Value</b></td>
-        <td width="85%"><select name="value" size="3">
+        <td width="85%"><select name="value" size="1">
+                         <option value="0">0</option>
                          <option value="1">1</option>
                          <option value="2">2</option>
                          <option value="3">3</option> 
@@ -83,7 +82,7 @@ if(isset($_GET['action'])) {
       </tr>             
       <tr>
         <td width="15%"><b>Kategorie</b></td>
-        <td width="85%"><select name="kat_ID" size="3">';
+        <td width="85%"><select name="kat_ID" size="1">';
         
                           $katq = mysql_query("SELECT ID,name FROM belagkat");
                           while($kat = mysql_fetch_array($katq)){                
@@ -96,9 +95,9 @@ if(isset($_GET['action'])) {
        </tr>
        <tr>
         <td width="15%"><b>Value</b></td>
-        <td width="85%"><select name="value" size="3">';
+        <td width="85%"><select name="value" size="1">';
                          
-                         for($i=1; $i<4; $i++){
+                         for($i=0; $i<4; $i++){
                           echo '<option '; 
                           if($i == $belag["value"]) echo " selected ";
                           echo 'value="'. $i .'">'. $i .'</option>';

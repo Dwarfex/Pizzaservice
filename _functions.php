@@ -2,6 +2,23 @@
 
 
 // -- GLOBAL FUNCTIONS -- //
+function is_blank($value) {
+    return empty($value) && !is_numeric($value);
+}
+
+function sql_value($value) {
+  if (empty($value)) {
+    return "NULL";
+  }
+  return $value;
+}
+
+function assign_array($value=""){
+  if(empty($value)){
+    return array();
+  }                          
+  return $value;
+}
 
 
 function gettemplate($template,$endung="html", $calledfrom="root") {

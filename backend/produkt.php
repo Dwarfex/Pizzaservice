@@ -3,9 +3,7 @@
 if(isset($_GET['delete'])) {
 	$ID = $_GET['delete'];
 	
-	safe_query("DELETE FROM ".PREFIX."produkt WHERE ID='$ID'");
-	safe_query("DELETE FROM ".PREFIX."belagzuprodukt WHERE produkt_ID='$ID'");
-	
+	safe_query("DELETE FROM ".PREFIX."produkt WHERE ID='$ID'");	
 }
 
 elseif(isset($_POST['save'])) {
@@ -68,8 +66,10 @@ elseif(isset($_GET['delete_preis'])) {
 
 elseif(isset($_POST['edit_belag'])) {
 	$produkt_ID = $_POST['produkt_ID'];
-  $formular = $_POST['belag_ID']; //checkboxarray
-	
+  
+	  if(isset($_POST['belag_ID'])) $formular = $_POST['belag_ID'];
+    else $formular = array();
+    
     $belagq = mysql_query("SELECT belag_ID FROM belagzuprodukt WHERE produkt_ID='$produkt_ID'");
     $dbout = array();
     $i = 0;
@@ -96,10 +96,6 @@ elseif(isset($_POST['edit_belag'])) {
 
 if(isset($_GET['action'])) {
 	if($_GET['action']=="add") {
-  /*  $CAPCLASS = new Captcha;
-    $CAPCLASS->create_transaction();
-    $hash = $CAPCLASS->get_hash();  */
-
       
     echo '<h1>Produkt hinzuf&uuml;gen</h1>
     <form method="post" action="index.php?site=produkt&action=edit" id="post" name="post" enctype="multipart/form-data" ">
@@ -168,62 +164,7 @@ if(isset($_GET['action'])) {
       </tr>
     </table>
     </form>';
-
-
-///// PREIS EDITIEREN
-      
-      echo'<h1>Preis editieren</h1>';
-      echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
-       <table width="100%" border="1" cellspacing="1" cellpadding="3">';
-      
-      $produktpreisq = mysql_query("SELECT * FROM produktpreis WHERE produkt_ID=" . $produkt["ID"] . "");
-      while($produktpreis = mysql_fetch_array($produktpreisq)){
-        echo '<tr>
-              <td width="15%">
-              <input type="hidden" name="produktpreis_ID[]" value="'. $produktpreis['ID'] .'" />
-              <select name="size[]" size="1">';
-        
-                          $sizeq = mysql_query("SELECT size,name FROM size");
-                          while($size = mysql_fetch_array($sizeq)){                
-                          
-                            echo '<option'; 
-                            if($size["size"] == $produktpreis["size"]) echo  " selected ";
-                            echo ' value='. $size["size"] . '>'. $size["name"] . '</option>'; 
-                          }
-                    echo '</select></td>
-                    <td width="15%"><input type="text" name="preis[]" size="10" value="'. $produktpreis["preis"] .'" /> Euro</td>
-                    <td width="70%"><a href="?site=produkt&action=edit&ID='. $produkt["ID"] . '&delete_preis=' . $produktpreis["ID"] . '"> delete</a></td>
-            
-            </tr>   ';
-      }
-      echo' <tr>
-        <td colspan="3"><input type="submit" name="edit_preis" value="Preis editieren" /></td>
-      </tr>
-    </table>
-    </form>';
-
-///// PREIS HINZUFUEGEN
-      
-      echo'<h3>Preis hinzuf&uuml;gen</h3>';
-      echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
-       <table width="100%" border="1" cellspacing="1" cellpadding="3">
-         <tr>
-            <td width="15%">
-              <input type="hidden" name="produkt_ID" value="'. $produkt['ID'] .'" />
-              <select name="size" size="1">';
-        
-                          $sizeq = mysql_query("SELECT size,name FROM size");
-                          while($size = mysql_fetch_array($sizeq)){                
-                          
-                            echo '<option value='. $size["size"] . '>'. $size["name"] . '</option>'; 
-                          }
-                    echo '</select></td>
-                    <td width="15%"><input type="text" name="preis" size="10" /> Euro</td>
-                    <td width="70%"><input type="submit" name="save_preis" value="hinzuf&uuml;gen" /></td>
-            </tr>       
-    </table>
-    </form>';
-
+    
 /////// ZUTATEN
     
     //auslesen der BelagZuProdukt Tabelle um checkboxen aktiv zu setzen
@@ -273,6 +214,78 @@ if(isset($_GET['action'])) {
           </table>
           </form>';
     }
+
+
+///// PREIS EDITIEREN
+      
+      
+      $produktkat_ID = $produkt['kat_ID'];
+      $produktpreisq = mysql_query("SELECT * FROM produktpreis WHERE produkt_ID=" . $produkt["ID"] . " ORDER BY size");
+      
+      if(mysql_num_rows($produktpreisq)>=1){
+          echo'<h1>Preis editieren</h1>';
+          echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
+           <table width="100%" border="1" cellspacing="1" cellpadding="3">';
+          while($produktpreis = mysql_fetch_array($produktpreisq)){
+            echo '<tr>
+                  <td width="15%">
+                  <input type="hidden" name="produktpreis_ID[]" value="'. $produktpreis['ID'] .'" />
+                  <select name="size[]" size="1">';
+            
+                              $sizeq = mysql_query("SELECT size,name FROM size WHERE produktkat_ID ='$produktkat_ID'");
+                              while($size = mysql_fetch_array($sizeq)){                
+                              
+                                echo '<option'; 
+                                if($size["size"] == $produktpreis["size"]) echo  " selected ";
+                                echo ' value='. $size["size"] . '>'. $size["name"] . '</option>'; 
+                              }
+                        echo '</select></td>
+                        <td width="15%"><input type="text" name="preis[]" size="10" value="'. $produktpreis["preis"] .'" /> Euro</td>
+                        <td width="70%"><a href="?site=produkt&action=edit&ID='. $produkt["ID"] . '&delete_preis=' . $produktpreis["ID"] . '"> delete</a></td>
+                
+                </tr>   ';
+          }
+          echo' <tr>
+            <td colspan="3"><input type="submit" name="edit_preis" value="Preis editieren" /></td>
+          </tr>
+        </table>
+        </form>';
+      }
+      
+
+///// PREIS HINZUFUEGEN
+      
+      $sizeq = mysql_query("SELECT size.size,size.name FROM size 
+                            WHERE produktkat_ID ='".$produkt['kat_ID']."'
+                            AND NOT EXISTS(SELECT produktpreis.size FROM produktpreis
+                            WHERE produkt_ID ='".$produkt['ID']."'
+                            AND produktpreis.size = size.size)  ");
+      
+      if(mysql_num_rows($sizeq)>=1){
+          echo'<h3>Preis hinzuf&uuml;gen</h3>';
+          echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
+           <table width="100%" border="1" cellspacing="1" cellpadding="3">
+             <tr>
+                <td width="15%">
+                  <input type="hidden" name="produkt_ID" value="'. $produkt['ID'] .'" />
+                  <select name="size" size="1">';
+                              
+                              
+                              while($size = mysql_fetch_array($sizeq)){                
+                              
+                                echo '<option value='. $size["size"] . '>'. $size["name"] . '</option>'; 
+                              }
+                        echo '</select></td>
+                        <td width="15%"><input type="text" name="preis" size="10" /> Euro</td>
+                        <td width="70%"><input type="submit" name="save_preis" value="hinzuf&uuml;gen" /></td>
+                </tr>       
+        </table>
+        </form>';
+      
+      }
+      
+
+
    
   
       
@@ -282,13 +295,30 @@ else{ // standard auflistung aller Beläge bei keiner action
 
   echo '<a href="?site=produkt&action=add">Neues Produkt anlegen</a>';
   
-  $katq = mysql_query("SELECT * FROM produktkat");
+  $katq = mysql_query("SELECT * FROM produktkat WHERE top_ID IS NULL");
   echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';
   while($kat = mysql_fetch_array($katq)){
-   echo "<tr>
-          <td colspan='4'><h3>" . $kat["name"] . "</h3></td>
-        </tr>";
-    
+     echo "<tr>
+            <td colspan='4'><h3>" . $kat["name"] . "</h3></td>
+          </tr>";
+          $subkatq = mysql_query("SELECT * FROM produktkat WHERE top_ID = '".$kat['ID']."'");
+          while($subkat = mysql_fetch_array($subkatq)){
+             echo "<tr>
+                    <td colspan='4'><h3>-- " . $subkat["name"] . "</h3></td>
+                  </tr>";
+          
+                $produktq = mysql_query("
+                SELECT * FROM produkt
+                WHERE kat_ID=" . $subkat["ID"] . "");
+                while($produkt = mysql_fetch_array($produktq)){
+                  echo '<tr>
+                          <td width="15%">' . $produkt["name"] . '</td>
+                          
+                          <td width="5%"><a href="?site=produkt&action=edit&ID=' . $produkt["ID"] . '"> edit</a></td>
+                          <td align="left"><a href="?site=produkt&delete=' . $produkt["ID"] . '"> delete</a></td>
+                        </tr>';    
+    }
+        }
                                
     $produktq = mysql_query("
     SELECT * FROM produkt

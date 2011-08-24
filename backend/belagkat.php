@@ -3,9 +3,7 @@
 if(isset($_GET['delete'])) {
 	$belagkatID = $_GET['delete'];
 	
-	safe_query("DELETE FROM ".PREFIX."belagkat WHERE ID='$belagkatID'");
-	//evtl auch belaege loeschen, die zu der kategorie gehoeren?
-	
+	safe_query("DELETE FROM ".PREFIX."belagkat WHERE ID='$belagkatID'");	
 }
 
 elseif(isset($_POST['save'])) {
