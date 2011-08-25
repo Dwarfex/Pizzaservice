@@ -1,3 +1,85 @@
+body {
+   margin: 0;
+   padding: 0;
+  
+
+	background-color: #16828f;
+	
+
+	
+	margin-top:0px;
+	font: normal 11px Arial;	
+	
+}
+
+/* Links */
+a, a:visited, a:active {
+  color: #16828f;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000000;
+  text-decoration: none;
+}
+
+a.white, a.white:visited, a.white:active {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+a.white:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+a.titlelink, a.titlelink:visited, a.titlelink:active {
+  color: #16828f;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a.titlelink:hover {
+  color: #000000;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+a.category, a.category:visited, a.category:active {
+  color: #333333;
+  text-decoration: none;
+}
+
+a.category:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+/* Font types */
+
+h1 {
+  
+  color: #16828f ;
+  font-size: 12px;
+  font-weight: bold;
+  
+  
+  padding-left: 20px;
+  
+  width: 95%;
+  text-align: left;
+  text-transform: uppercase;
+  
+}
+
+h2 {
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #000000;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
 #admin_pad {
 	float:left;
 	
@@ -20,3 +102,6 @@
 	padding-top:25px;
 	
 	}
+	
+	
+	
