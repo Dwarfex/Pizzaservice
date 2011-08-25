@@ -23,7 +23,12 @@ include("_functions.php");
 <body>
 <div id="container">
 Schau mal ins Backend : <a href="/backend/index.php">Klick</a>
+
+<?php include("main_navi.php")?>
 	<?php
+	
+	
+	
           if(!isset($site)) $site="main";
 					$invalide = array('\\','/','/\/',':','.');
 					$site = str_replace($invalide,' ',$site);

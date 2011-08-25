@@ -1,5 +1,8 @@
 <?php
 
+// -- LOGIN SESSION -- //
+
+systeminc('session');
 
 // -- GLOBAL FUNCTIONS -- //
 function is_blank($value) {
