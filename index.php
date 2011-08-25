@@ -23,7 +23,7 @@ include("_functions.php");
 <body>
 <div id="container">
 	<?php
-					if(!isset($site)) $site="main";
+          if(!isset($site)) $site="main";
 					$invalide = array('\\','/','/\/',':','.');
 					$site = str_replace($invalide,' ',$site);
 					if(!file_exists($site.".php")) $site = "main";
