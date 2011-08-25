@@ -1,0 +1,22 @@
+#admin_pad {
+	float:left;
+	
+	width:500px;	
+}
+
+#admin_navi{ 
+	float:left;
+	
+	
+	width:250px;	
+}
+
+#admin_top{
+	float:left;
+	height:180px;
+	width:100%;
+	clear:both;
+	padding-left:50px;
+	padding-top:25px;
+	
+	}
