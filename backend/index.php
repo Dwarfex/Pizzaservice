@@ -22,12 +22,13 @@ if(isset($site)) unset($site);
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	
-	<!-- <link href="_stylesheet.css" rel="stylesheet" type="text/css" />-->
+	<link href="../_stylesheet.css" rel="stylesheet" type="text/css" />
 
 </head>
 <body>
-
-   <div class="pad"><?php
+   <div id="admin_top"><b>Hallo und Herzlich Willkommen im BACKEND!!!</b></div>
+<div id="admin_navi"> Hier NAVI<?php include("navigation.php")?></div>
+<div id="admin_pad"><?php
    if(isset($site)){
    $invalide = array('\\','/','//',':','.');
    $site = str_replace($invalide,' ',$site);

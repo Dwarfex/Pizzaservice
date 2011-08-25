@@ -117,7 +117,7 @@ if(isset($_GET['action'])) {
 }
 else{ // standard aufruf wenn action nicht gesetzt
     
-    echo '<a href="?site=belagkat&action=add">Neue Kategorie hinzuf&uuml;gen</a>';
+    echo '<a href="?site=belagkat&action=add">Neue Kategorie hinzuf&uuml;gen</a><br /><br /> ';
     
     $katq = mysql_query("SELECT ID,name FROM belagkat");
     echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';

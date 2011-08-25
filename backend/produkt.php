@@ -139,9 +139,9 @@ if(isset($_GET['action'])) {
    $produkt = mysql_fetch_array($produktq);
   
   echo'<h1>Produkt editieren</h1>';
-
-    echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
-    <table width="100%" border="1" cellspacing="1" cellpadding="3">
+	//<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
+    echo '<form method="post" action="index.php?site=produkt" id="post" name="post" enctype="multipart/form-data" ">
+    <table width="100%" border="0" cellspacing="1" cellpadding="3">
       <tr>
         <td width="15%"><b>Name des Produktes</b></td>
         <td width="85%"><input type="text" name="name" size="60" value="'. $produkt["name"] . '" />
@@ -193,8 +193,10 @@ if(isset($_GET['action'])) {
       ORDER BY belagkat.ID");
    
     if(mysql_num_rows($katq)>=1){        
-       echo '<h1>Zutaten</h1>
-             <form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
+       //<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
+	   echo '<h1>Zutaten</h1>
+             
+			 <form method="post" action="index.php?site=produkt" id="post" name="post" enctype="multipart/form-data" ">
              <table width="100%" border="0" cellspacing="1" cellpadding="3">
              <input type="hidden" name="produkt_ID" value="'. $produkt['ID'] .'" />';
          while($kat = mysql_fetch_array($katq)){
@@ -229,8 +231,9 @@ if(isset($_GET['action'])) {
       
       if(mysql_num_rows($produktpreisq)>=1){
           echo'<h1>Preis editieren</h1>';
-          echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
-           <table width="100%" border="1" cellspacing="1" cellpadding="3">';
+          //<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
+		  echo '<form method="post" action="index.php?site=produkt" id="post" name="post" enctype="multipart/form-data" ">
+           <table width="100%" border="0" cellspacing="1" cellpadding="3">';
           while($produktpreis = mysql_fetch_array($produktpreisq)){
             echo '<tr>
                   <td width="15%">
@@ -270,7 +273,7 @@ if(isset($_GET['action'])) {
       if(mysql_num_rows($sizeq)>=1){
           echo'<h3>Preis hinzuf&uuml;gen</h3>';
           echo '<form method="post" action="index.php?site=produkt&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
-           <table width="100%" border="1" cellspacing="1" cellpadding="3">
+           <table width="100%" border="0" cellspacing="1" cellpadding="3">
              <tr>
                 <td width="15%">
                   <input type="hidden" name="produkt_ID" value="'. $produkt['ID'] .'" />
