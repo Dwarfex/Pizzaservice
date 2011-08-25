@@ -168,8 +168,8 @@ else{ // standard aufruf wenn action nicht gesetzt
     while($size = mysql_fetch_array($sizeq)){
       echo '<tr>
               <td width="15%">' . $size["name"] . '</td>
-              <td width="5%"><a href="?site=size&action=edit&ID=' . $size["size"] . '"> edit</a></td>
-              <td align="left"><a href="?site=size&delete=' . $size["size"] . '"> delete</a></td>
+              <td width="5%"><a href="?site=size&action=edit&ID=' . $size["size"] . '" class="button"> edit</a></td>
+              <td align="left"><a href="?site=size&delete=' . $size["size"] . '" class="button"> delete</a></td>
           </tr>';      
     }
   }

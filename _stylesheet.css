@@ -1,21 +1,23 @@
 body {
-   margin: 0;
+   margin: 80;
    padding: 0;
   
 
-	background-color: #16828f;
+	background-color: #FF9;
 	
 
 	
 	margin-top:0px;
-	font: normal 11px Arial;	
+	margin-left:80px;
+	font: normal 13px Arial;	
 	
 }
 
 /* Links */
 a, a:visited, a:active {
-  color: #16828f;
+  color: #900;
   text-decoration: none;
+  font-weight:bold;
 }
 
 a:hover {
@@ -59,7 +61,7 @@ a.category:hover {
 
 h1 {
   
-  color: #16828f ;
+ 
   font-size: 12px;
   font-weight: bold;
   
@@ -78,6 +80,17 @@ h2 {
   color: #000000;
   text-transform: uppercase;
   font-weight: bold;
+}
+
+.button {
+	padding:1px 8px 1px 8px;
+	margin-left: 5px;
+	
+	font-size:11px;
+	border: 1px solid #333333;
+	background-color: #FF3;
+	color:#000000;
+	
 }
 
 #admin_pad {

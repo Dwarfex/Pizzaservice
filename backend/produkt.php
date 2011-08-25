@@ -323,8 +323,8 @@ else{ // standard auflistung aller Beläge bei keiner action
                   echo '<tr>
                           <td width="15%">' . $produkt["name"] . '</td>
                           
-                          <td width="5%"><a href="?site=produkt&action=edit&ID=' . $produkt["ID"] . '"> edit</a></td>
-                          <td align="left"><a href="?site=produkt&delete=' . $produkt["ID"] . '"> delete</a></td>
+                          <td width="5%"><a href="?site=produkt&action=edit&ID=' . $produkt["ID"] . '" class="button"> edit</a></td>
+                          <td align="left"><a href="?site=produkt&delete=' . $produkt["ID"] . '" class="button"> delete</a></td>
                         </tr>';    
     }
         }
@@ -336,8 +336,8 @@ else{ // standard auflistung aller Beläge bei keiner action
       echo '<tr>
               <td width="15%">' . $produkt["name"] . '</td>
               
-              <td width="5%"><a href="?site=produkt&action=edit&ID=' . $produkt["ID"] . '"> edit</a></td>
-              <td align="left"><a href="?site=produkt&delete=' . $produkt["ID"] . '"> delete</a></td>
+              <td width="5%"><a href="?site=produkt&action=edit&ID=' . $produkt["ID"] . '" class="button"> edit</a></td>
+              <td align="left"><a href="?site=produkt&delete=' . $produkt["ID"] . '" class="button"> delete</a></td>
             </tr>';    
     }
   }

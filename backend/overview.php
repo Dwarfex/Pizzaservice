@@ -30,7 +30,7 @@ else {
 		<td>'.$kunden_info['anrede'].'</td>
 		<td>'.$kunden_info['vorname'].', '.$kunden_info['nachname'].'</td>
 		
-		<td><a href=index.php?site=overview&action=show&ID='.$offeneBestellungen['kunde_ID'].'> Bestellung einsehen</a></td>
+		<td><a href=index.php?site=overview&action=show&ID='.$offeneBestellungen['kunde_ID'].' class="button"> Bestellung einsehen</a></td>
 	  </tr>
 	</table>';
 		

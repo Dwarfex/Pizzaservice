@@ -133,8 +133,8 @@ else{ // standard auflistung aller Beläge bei keiner action
       echo '<tr>
               <td width="15%">' . $belag["name"] . '</td>
               <td width="5%">' . $belag["value"] . '</td>
-              <td width="5%"><a href="?site=belag&action=edit&ID=' . $belag["ID"] . '"> edit</a></td>
-              <td align="left"><a href="?site=belag&delete=' . $belag["ID"] . '"> delete</a></td>
+              <td width="5%"><a href="?site=belag&action=edit&ID=' . $belag["ID"] . '" class="button"> edit</a></td>
+              <td align="left"><a href="?site=belag&delete=' . $belag["ID"] . '" class="button"> delete</a></td>
             </tr>';    
     }
   }

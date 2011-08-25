@@ -124,8 +124,8 @@ else{ // standard aufruf wenn action nicht gesetzt
     while($kat = mysql_fetch_array($katq)){
      echo '<tr>
               <td width="15%">' . $kat["name"] . '</td>
-              <td width="5%"><a href="?site=belagkat&action=edit&ID=' . $kat["ID"] . '"> edit</a></td>
-              <td align="left"><a href="?site=belagkat&delete=' . $kat["ID"] . '"> delete</a></td>
+              <td width="5%"><a href="?site=belagkat&action=edit&ID=' . $kat["ID"] . '" class="button"> edit</a></td>
+              <td align="left"><a href="?site=belagkat&delete=' . $kat["ID"] . ' " class="button"> delete</a></td>
           </tr>';                          
     }
     echo '</table>';
