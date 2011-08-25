@@ -22,6 +22,7 @@ include("_functions.php");
 </head>
 <body>
 <div id="container">
+Schau mal ins Backend : <a href="/backend/index.php">Klick</a>
 	<?php
           if(!isset($site)) $site="main";
 					$invalide = array('\\','/','/\/',':','.');
