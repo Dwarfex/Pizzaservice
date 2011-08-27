@@ -1,9 +1,12 @@
 <?php
 
+
+
 include("_mysql.php");
 include("_settings.php");
 include("_functions.php");
 
+//session_destroy();
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -22,7 +25,7 @@ include("_functions.php");
 </head>
 <body>
 <div id="container">
-Schau mal ins Backend : <a href="/backend/index.php">Klick</a>
+<!-- Schau mal ins Backend : <a href="/backend/index.php">Klick</a> -->
 
 <?php include("main_navi.php")?>
 	<?php
@@ -35,6 +38,8 @@ Schau mal ins Backend : <a href="/backend/index.php">Klick</a>
 					if(!file_exists($site.".php")) $site = "main";
 					include($site.".php");
 					?>
+
+<?php include("basket.php")?>
 </div>
 </body>
 </html>

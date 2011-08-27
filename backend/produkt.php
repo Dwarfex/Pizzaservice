@@ -326,7 +326,7 @@ else{ // standard auflistung aller Beläge bei keiner action
                           <td width="5%"><a href="?site=produkt&action=edit&ID=' . $produkt["ID"] . '" class="button"> edit</a></td>
                           <td align="left"><a href="?site=produkt&delete=' . $produkt["ID"] . '" class="button"> delete</a></td>
                         </tr>';    
-    }
+                }
         }
                                
     $produktq = mysql_query("
