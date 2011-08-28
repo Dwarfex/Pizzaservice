@@ -5,6 +5,7 @@
 systeminc('session');
 
 // -- GLOBAL FUNCTIONS -- //
+
 function is_blank($value) {
     return empty($value) && !is_numeric($value);
 }
@@ -14,6 +15,10 @@ function sql_value($value) {
     return "NULL";
   }
   return $value;
+}
+
+function setspacer($limit, $i, $spacer){
+  if($i<$limit) return $spacer;
 }
 
 
