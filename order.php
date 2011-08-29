@@ -29,7 +29,7 @@ if(isset($_SESSION['bestellsumme'])){
        
        
        safe_query("UPDATE ".PREFIX."bestellung SET done='0', wish='$wish'  WHERE ID=".$_SESSION['bestell_ID']." ");
-    
+       echo' Bestellung abgeschickt. - Je nach aktuellem Aufwand betr&auml;gt die Lieferzeit bis zu 120 Minuten :P';
        unset($_SESSION['bestell_ID']);
     }
     else{
@@ -79,7 +79,7 @@ if(isset($_SESSION['bestellsumme'])){
             <td width="85%"><textarea name="wish" cols="25" rows="5"></textarea></td>
           </tr>   
           <tr>
-            <td colspan="2"><input type="submit" name="send" value="weiter" /></td>
+            <td colspan="2"><input type="submit" name="send" value="Abschicken" /></td>
           </tr>
         </table>
         </form>';
