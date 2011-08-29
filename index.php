@@ -24,13 +24,13 @@ include("_functions.php");
 
 </head>
 <body>
-<div id="holder">
- <div id="top"><b>Hallo und Herzlich Willkommen im BACKEND!!!</b></div>
+<div class="holder">
+ <div class="top"><b>Hallo und Herzlich Willkommen im BACKEND!!!</b></div>
 
 <!-- Schau mal ins Backend : <a href="/backend/index.php">Klick</a> -->
-<div id="navi">
+<div class="navi">
 <?php include("main_navi.php")?></div>
-	<div id="pad"><?php
+	<div class="pad"><?php
 	
 	
 	
@@ -40,8 +40,8 @@ include("_functions.php");
 					if(!file_exists($site.".php")) $site = "main";
 					include($site.".php");
 					?>
-</div>
-<?php include("basket.php")?><div id="footer"></div>
+</div><div class="basket">
+<?php include("basket.php")?></div><div class="footer"></div>
 </div></div>
 </body>
 </html>

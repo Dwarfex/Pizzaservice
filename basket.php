@@ -4,14 +4,14 @@ if(!isset($kat_string)){
     $kat_string ='';
 }
 //// START WARENKORB  
-echo '<table width="100%" border="1" cellspacing="1" cellpadding="3">
+echo '<table  width="100%" border="0" cellspacing="2" cellpadding="5">
        <tr>
         <td>&nbsp;</td>
         <td>Artikel</td>
         <td>Preis</td>
         <td>Editieren</td>
        </tr>';
-
+ 
 // Nur wenn bereits ein Produkt in den Warenkorb geschoben wurde                                
 if(isset($_SESSION['bestell_ID'])){
 

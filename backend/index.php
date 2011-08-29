@@ -26,10 +26,10 @@ if(isset($site)) unset($site);
 
 </head>
 <body>
-<div id="holder">
-   <div id="top"><b>Hallo und Herzlich Willkommen im BACKEND!!!</b></div>
-<div id="navi"><?php include("navigation.php")?></div>
-<div id="pad"><?php
+<div class="holder">
+   <div class="top"><b>Hallo und Herzlich Willkommen im BACKEND!!!</b></div>
+<div class="navi"><?php include("navigation.php")?></div>
+<div class="pad"><?php
    if(isset($site)){
    $invalide = array('\\','/','//',':','.');
    $site = str_replace($invalide,' ',$site);
@@ -38,7 +38,7 @@ if(isset($site)) unset($site);
    }
    else include('overview.php');
    ?></div>
-<div id="footer"></div>
+<div class="footer"></div>
 </div>
 </body>
 </html>
