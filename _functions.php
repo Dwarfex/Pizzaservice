@@ -93,7 +93,7 @@ function checkforempty($valuearray) {
 
 if(isset($_GET['site'])) $site = $_GET['site'];
 else $site = '';
-
+if(!isset($site)) $site="main";
 if(!isset($_SERVER['HTTP_REFERER'])) {
 	$_SERVER['HTTP_REFERER'] = "";
 }

@@ -29,7 +29,7 @@ if(isset($site)) unset($site);
 <div class="holder">
    <div class="top"><b>Hallo und Herzlich Willkommen im BACKEND!!!</b></div>
 <div class="navi"><?php include("navigation.php")?></div>
-<div class="pad"><?php
+<div class="admin_pad"><?php
    if(isset($site)){
    $invalide = array('\\','/','//',':','.');
    $site = str_replace($invalide,' ',$site);

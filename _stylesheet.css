@@ -96,6 +96,13 @@ h2 {
 	float:left;
 	
 	min-height: 500px;	
+	width:500px;	
+}
+
+.admin_pad {
+	float:left;
+	
+	min-height: 500px;	
 	width:900px;	
 }
 
