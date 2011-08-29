@@ -1,16 +1,19 @@
 <hr>
 <?php
 
-
 if(isset($_GET['action'])) {
 	if($_GET['action']=="add") { 
     
     // Beim ersten hinzufügen eines Produktes in den Warenkorb wird Neuer Kunde generiert
-    if(!isset($_SESSION['ID'])){  
-       safe_query("INSERT INTO ".PREFIX."kunde () values()");
-       $ID = mysql_insert_id();
-       $_SESSION['ID'] = $ID;
-       
+    if(!isset($_SESSION['ID'])){
+      if(isset($_COOKIE['kunde_ID'])){  // Gibt es vielleicht einen Cookie?
+         $_SESSION['ID'] = $_COOKIE['kunde_ID'];   // Wenn Ja, wird die Kunden ID übernommen
+      }
+      else{
+         safe_query("INSERT INTO ".PREFIX."kunde () values()");     // wenn nein, wird neuer Kunde generiert
+          $ID = mysql_insert_id();
+          $_SESSION['ID'] = $ID;
+      }   
     }
     // Ist die letzte Bestellung abgeschlossen und eine neue wird aufgenommen, wird eine neue Bestellung generiert
     if(!isset($_SESSION['bestell_ID'])){ 
