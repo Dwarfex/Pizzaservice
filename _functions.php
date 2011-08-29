@@ -1,5 +1,7 @@
 <?php
 
+$mindestbestellwert = 5;
+
 // -- LOGIN SESSION -- //
 
 systeminc('session');

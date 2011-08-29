@@ -1,10 +1,9 @@
 <?php
 
-if(!isset($kat_string)){
-  $kat_string ='';
+if(!isset($kat_string)){  
+    $kat_string ='';
 }
-
-
+//// START WARENKORB  
 echo '<table width="100%" border="1" cellspacing="1" cellpadding="3">
        <tr>
         <td>&nbsp;</td>
@@ -12,9 +11,11 @@ echo '<table width="100%" border="1" cellspacing="1" cellpadding="3">
         <td>Preis</td>
         <td>Editieren</td>
        </tr>';
-                                
+
+// Nur wenn bereits ein Produkt in den Warenkorb geschoben wurde                                
 if(isset($_SESSION['bestell_ID'])){
 
+      // Ausgabe aller Produkte im Warenkorb
       $produktq = mysql_query("(SELECT
                                 produktzubestellung.ID AS produktzubestellID,
                                 produkt.ID,
@@ -27,7 +28,7 @@ if(isset($_SESSION['bestell_ID'])){
                                 SUM(produktpreis.preis) AS summe
                                 
                                 FROM produktzubestellung, produkt, produktpreis, size
-                                WHERE produktzubestellung.bestell_ID = 5
+                                WHERE produktzubestellung.bestell_ID = '".$_SESSION['bestell_ID']."'
                                 AND produktzubestellung.produkt_ID = produkt.ID
                                 AND Produkt.ID = produktpreis.produkt_ID
                                 AND produktpreis.size = size.size
@@ -50,7 +51,7 @@ if(isset($_SESSION['bestell_ID'])){
                                 FROM produktzubestellung, produkt, produktkat,
                                 size, belagzuprodukt, belag, belagpreis
                                 
-                                WHERE produktzubestellung.bestell_ID = 5
+                                WHERE produktzubestellung.bestell_ID = '".$_SESSION['bestell_ID']."'
                                 AND produktzubestellung.produkt_ID = produkt.ID
                                 AND produkt.ID = belagzuprodukt.produkt_ID
                                 AND belagzuprodukt.belag_ID = belag.ID
@@ -63,17 +64,19 @@ if(isset($_SESSION['bestell_ID'])){
                                 GROUP BY produktzubestellung.ID)
                                 
                                 ORDER BY produktzubestellID");
-    $produktsumme = 0;
-    while($produkt = mysql_fetch_array($produktq)){
-      
-      echo '<tr>
-              <td width="5%">'.$produkt['anzahl'].'x</td>  
-              <td width="30%">'.$produkt['kat_name'].' ' . $produkt["produkt"] . ' - ' . $produkt["groesse"];
-              if(isset($produkt['def_preis'])){
-                echo ' <a href="index.php?site=category&edit_item=true&item='.$produkt['produktzubestellID'].' ">zutaten erg&auml;nzen</a>';
-              }
+        
+        $bestellsumme = 0; // Gesamtsumme
+        while($produkt = mysql_fetch_array($produktq)){
+          
+          echo '<tr>
+                  <td width="5%">'.$produkt['anzahl'].'x</td>  
+                  <td width="30%">'.$produkt['kat_name'].' ' . $produkt["produkt"] . ' - ' . $produkt["groesse"];
+                  if(isset($produkt['def_preis'])){
+                    echo ' <a href="index.php?site=category&edit_item=true&item='.$produkt['produktzubestellID'].' ">zutaten erg&auml;nzen</a>';
+                  }
               
-         
+//// START EXTRAS         
+         // Ausgabe aller Extras zum jeweiligen Produkt
          $extraq = mysql_query("SELECT produktzubestellung.ID AS produktzubestell_ID,
                                 belag.ID AS belag_ID,
                                 belag.name AS belag,
@@ -95,7 +98,7 @@ if(isset($_SESSION['bestell_ID'])){
                     echo'<br>Extra - ';
                       $i = 1;
                       while($extra = mysql_fetch_array($extraq)){
-                        $extra_summe += $extra['summe'];
+                        $extra_summe += $extra['summe']; // extras werden aufsummiert
                         if($extra['anzahl'] > 1) echo $extra['anzahl'].'x ';
                         
                         echo '<a href="index.php?site=category&item='.$produkt['produktzubestellID'].'&del_extra='.$extra['belag_ID'].' ">'.$extra['belag'].'</a>'.setspacer($limit,$i,',').' ';
@@ -104,7 +107,9 @@ if(isset($_SESSION['bestell_ID'])){
                    }       
          
          
-         $produkt["summe"] += $extra_summe;
+         $produkt["summe"] += $extra_summe;  // Produktsumme und Extrasumme werden aufsummiert
+//// START EDIT         
+         // Produkt hinzufuegen, eines löschen, alle Produkte mit selber ID löschen
          echo'</td> 
               <td width="5%">' . $produkt['summe'] . ' &euro;</td>
               <td><a href="index.php?site=category&'.$kat_string.'&action=add&produkt='.$produkt['ID'].'&size='.$produkt['size'].'">+</a>&nbsp;
@@ -115,12 +120,21 @@ if(isset($_SESSION['bestell_ID'])){
                   
            echo'</tr>';
     
-    $produktsumme += $produkt['summe'];
+      $bestellsumme += $produkt['summe'];  // bestellsumme ist die summe aller Produkte plus extras
     }
+    $_SESSION['bestellsumme'] = $bestellsumme;   // bestellsumme wird in der session gespeichert damit man sie der Order.php nicht ein weiteres mal berechnen muss
     echo '<tr>
             <td colspan="2" align="right">summe: </td>
-            <td>' . $produktsumme . ' &euro;</td>
-            <td><a href="index.php?site=order">bestellen</a></td>
+            <td>' . $bestellsumme . ' &euro;</td>
+            <td>';
+            if($bestellsumme >= $mindestbestellwert){  // mindestbestellwert aktuell in functions.php
+              echo '<a href="index.php?site=order">bestellen</a>';
+            }
+            else{
+              echo 'mindestbestellwert: '. $mindestbestellwert . ' &euro;';
+            }
+            
+        echo'</td>
           </tr>';
 }
 else{            
@@ -128,7 +142,7 @@ else{
           <td colspan="4">keine Artikel im Warenkorb</td>
         </tr>';
 }    
-    echo '</table>';
+echo '</table>';
 
 
 

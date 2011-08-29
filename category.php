@@ -3,12 +3,15 @@
 
 if(isset($_GET['action'])) {
 	if($_GET['action']=="add") { 
-    if(!isset($_SESSION['ID'])){  // Neuen Kunden generieren
+    
+    // Beim ersten hinzufügen eines Produktes in den Warenkorb wird Neuer Kunde generiert
+    if(!isset($_SESSION['ID'])){  
        safe_query("INSERT INTO ".PREFIX."kunde () values()");
        $ID = mysql_insert_id();
        $_SESSION['ID'] = $ID;
        
     }
+    // Ist die letzte Bestellung abgeschlossen und eine neue wird aufgenommen, wird eine neue Bestellung generiert
     if(!isset($_SESSION['bestell_ID'])){ 
        $ID = $_SESSION['ID'];
        $date = date("Y-m-d"); 
@@ -18,6 +21,7 @@ if(isset($_GET['action'])) {
        $_SESSION['bestell_ID'] = $bestell_ID;
     }
     
+    // Produkt zur DB:produktzubestellung hinzufügen
     if(isset($_GET['produkt'])){   // Produkt zur Bestellung hinzufügen
        $bestell_ID = $_SESSION['bestell_ID'];
        $produkt_ID = $_GET['produkt'];
@@ -28,27 +32,21 @@ if(isset($_GET['action'])) {
     
        $_GET['item'] = mysql_insert_id();
     }
-    
-    
-  
-    unset($_GET['action']);
   }
+  // Alle Produkte mit derselben ID werden aus dem Warenkorb gelöscht
   else if($_GET['action']=="delete"){
       $ID = $_GET['produkt'];
       $size = $_GET['size'];
-	
-	    safe_query("DELETE FROM ".PREFIX."produktzubestellung WHERE produkt_ID='$ID' AND size='$size'");
-    unset($_GET['action']);
+	    safe_query("DELETE FROM ".PREFIX."produktzubestellung WHERE produkt_ID='$ID' AND size='$size'"); 
   }
+  // ein einziges Produkt wird gelöscht
   else if($_GET['action']=="sub"){
       $produktzubestell_ID = $_GET['produkt'];
-      
-	
-	    safe_query("DELETE FROM ".PREFIX."produktzubestellung WHERE ID='$produktzubestell_ID'");
-    unset($_GET['action']);
+	    safe_query("DELETE FROM ".PREFIX."produktzubestellung WHERE ID='$produktzubestell_ID'");  
   }
 }
 
+// Extra zu einem Produkt hinzufügen
 if(isset($_GET['add_extra'])){
   $produktzubestell_ID = $_GET['item'];
   $belag_ID = $_GET['add_extra'];
@@ -57,6 +55,7 @@ if(isset($_GET['add_extra'])){
 	                 values('$produktzubestell_ID','$belag_ID')");
 }
 
+// Extra von einem Produkt löschen
 if(isset($_GET['del_extra'])){
   $produktzubestell_ID = $_GET['item'];
   $belag_ID = $_GET['del_extra'];
@@ -64,87 +63,87 @@ if(isset($_GET['del_extra'])){
   safe_query("DELETE FROM ".PREFIX."belagzubestellung WHERE produktzubestell_ID='$produktzubestell_ID' AND belag_ID='$belag_ID' LIMIT 1");
 }   
 
+
+// Editierübersicht von Produkten mit Extras
 if(isset($_GET['edit_item'])){
 
    if(isset($_GET['item'])){
      echo '<table width="100%" border="1" cellspacing="1" cellpadding="3">';
+     
+//// START BASISINFOS     
+     // Ausgabe der Produkt-Basisinfos (name,groesse...) 
      $produktq = mysql_query("SELECT produkt.ID,
-                            produktkat.name AS kat_name,
-                            produkt.name AS produkt,
-                            size.size,
-                            size.name AS groesse,
-                            produktkat.ID AS produktkat_ID,
-                            def_preis + SUM(belagpreis.preis) AS summe
-                            
-                            FROM produktzubestellung, produkt, produktkat,
-                            size, belagzuprodukt, belag, belagpreis
-                            
-                            WHERE produktzubestellung.ID = '".$_GET['item']."'
-                            AND produktzubestellung.produkt_ID = produkt.ID
-                            AND produkt.ID = belagzuprodukt.produkt_ID
-                            AND belagzuprodukt.belag_ID = belag.ID
-                            AND belag.value = belagpreis.value
-                            AND belagpreis.size = size.size
-                            AND produktzubestellung.size = size.size
-                            AND produkt.kat_ID = produktkat.ID
-                            AND produktkat.ID = size.produktkat_ID
-                            
-                            GROUP BY produkt.ID");
+                              produktkat.name AS kat_name,
+                              produkt.name AS produkt,
+                              size.size,
+                              size.name AS groesse,
+                              produktkat.ID AS produktkat_ID,
+                              def_preis + SUM(belagpreis.preis) AS summe
+                              
+                              FROM produktzubestellung, produkt, produktkat,
+                              size, belagzuprodukt, belag, belagpreis
+                              
+                              WHERE produktzubestellung.ID = '".$_GET['item']."'
+                              AND produktzubestellung.produkt_ID = produkt.ID
+                              AND produkt.ID = belagzuprodukt.produkt_ID
+                              AND belagzuprodukt.belag_ID = belag.ID
+                              AND belag.value = belagpreis.value
+                              AND belagpreis.size = size.size
+                              AND produktzubestellung.size = size.size
+                              AND produkt.kat_ID = produktkat.ID
+                              AND produktkat.ID = size.produktkat_ID
+                              
+                              GROUP BY produkt.ID");
                
-                 $produkt = mysql_fetch_array($produktq); 
-                   echo '<tr>
-                          <td><b>' . $produkt["kat_name"] . ' &nbsp; '. $produkt['produkt'] .' &nbsp; '. $produkt['groesse'] .'</b></td>
-                         </tr>';
-                
-                 $extraq = mysql_query("SELECT produktzubestellung.ID AS produktzubestell_ID,
-                                          belag.ID AS belag_ID,
-                                          belag.name AS belag,
-                                          
-                                          COUNT(belagzubestellung.belag_ID) AS anzahl,
-                                          SUM(belagpreis.preis) AS summe 
-                                          FROM produktzubestellung, belagzubestellung, belag, belagpreis
-                                          WHERE produktzubestellung.ID = '".$_GET['item']."'
-                                          AND produktzubestellung.ID = belagzubestellung.produktzubestell_ID
-                                          AND belagzubestellung.belag_ID = belag.ID
-                                          AND belag.value = belagpreis.value
-                                          AND belagpreis.size = produktzubestellung.size
-                                          GROUP BY belagzubestellung.belag_ID
-                                          ORDER BY belagzubestellung.ID");
+       $produkt = mysql_fetch_array($produktq); 
+       echo '<tr>
+              <td><b>' . $produkt["kat_name"] . ' &nbsp; '. $produkt['produkt'] .' &nbsp; '. $produkt['groesse'] .'</b></td>
+             </tr>';
+        // Ausgabe der gewählten Extras                
+       $extraq = mysql_query("SELECT produktzubestellung.ID AS produktzubestell_ID,
+                              belag.ID AS belag_ID,
+                              belag.name AS belag,
+                              
+                              COUNT(belagzubestellung.belag_ID) AS anzahl,
+                              SUM(belagpreis.preis) AS summe 
+                              FROM produktzubestellung, belagzubestellung, belag, belagpreis
+                              WHERE produktzubestellung.ID = '".$_GET['item']."'
+                              AND produktzubestellung.ID = belagzubestellung.produktzubestell_ID
+                              AND belagzubestellung.belag_ID = belag.ID
+                              AND belag.value = belagpreis.value
+                              AND belagpreis.size = produktzubestellung.size
+                              GROUP BY belagzubestellung.belag_ID
+                              ORDER BY belagzubestellung.ID");
                    
-                   $extra_summe = 0;
-                   $limit = mysql_num_rows($extraq);
-                   if($limit >= 1){
-                     echo '<tr>
-                            <td>Extras: ';
-                      $i = 1;
-                      while($extra = mysql_fetch_array($extraq)){
-                        $extra_summe += $extra['summe'];
-                        if($extra['anzahl'] > 1) echo $extra['anzahl'].'x ';
-                        
-                        echo '<a href="index.php?site=category&edit_item=true&item='.$_GET['item'].'&del_extra='.$extra['belag_ID'].' ">'.$extra['belag'].'</a>'.setspacer($limit,$i,',').' ';
-                        $i++;
-                      }
-                   }
-                     
-                     echo '</td>
-                          </tr>
-                          <tr>
-                           <td>Summe: '.($produkt['summe'] + $extra_summe).' &euro;</td>
-                          </tr>';
+       $extra_summe = 0;
+       $limit = mysql_num_rows($extraq);
+       if($limit >= 1){
+         echo '<tr>
+                <td>Extras: ';
+          $i = 1;
+          while($extra = mysql_fetch_array($extraq)){
+            $extra_summe += $extra['summe'];    // Extras werden aufsummiert
+            if($extra['anzahl'] > 1) echo $extra['anzahl'].'x ';
+            
+            echo '<a href="index.php?site=category&edit_item=true&item='.$_GET['item'].'&del_extra='.$extra['belag_ID'].' ">'.$extra['belag'].'</a>'.setspacer($limit,$i,',').' ';
+            $i++;
+          }
+       }
+       echo '</td>
+            </tr>
+            <tr>
+             <td>Summe: '.($produkt['summe'] + $extra_summe).' &euro;</td>
+            </tr></table>';
                    
-                   
-       
-       
-       
-       echo '</table>';
-   
-      $katq = mysql_query("SELECT belagkat.ID,belagkat.name 
-      FROM belagkat,belagkatzuproduktkat,produktkat,produkt 
-      WHERE produkt.ID ='".$produkt['ID']."'
-      AND produkt.kat_ID = produktkat.ID
-      AND produktkat.ID = belagkatzuproduktkat.produktkat_ID
-      AND belagkatzuproduktkat.belagkat_ID = belagkat.ID
-      ORDER BY belagkat.ID");
+//// START BELAGAUSWAHL
+       // Ausgabe Kategorienamen
+       $katq = mysql_query("SELECT belagkat.ID,belagkat.name 
+                            FROM belagkat,belagkatzuproduktkat,produktkat,produkt 
+                            WHERE produkt.ID ='".$produkt['ID']."'
+                            AND produkt.kat_ID = produktkat.ID
+                            AND produktkat.ID = belagkatzuproduktkat.produktkat_ID
+                            AND belagkatzuproduktkat.belagkat_ID = belagkat.ID
+                            ORDER BY belagkat.ID");
    
     if(mysql_num_rows($katq)>=1){         
 	   echo '<h3>Extras</h3>
@@ -154,7 +153,7 @@ if(isset($_GET['edit_item'])){
              echo "<tr>
                     <td colspan='2'><b>" . $kat["name"] . "</b></td>
                   </tr>";
-                                     
+             // Ausgabe Beläge                        
              $belagq = mysql_query("SELECT ID, preis, name  
                                     FROM belag,belagpreis
                                     WHERE belag.kat_ID = '".$kat['ID']."'
@@ -172,7 +171,8 @@ if(isset($_GET['edit_item'])){
    }
 }
 
-if(isset($_GET['catID'])) {  // standard wenn kategorie ausgewählt wurde
+// Standard wenn kategorie ausgewählt wurde
+if(isset($_GET['catID'])) { 
 
 //// Gibt es Subkategorien?
   

@@ -8,7 +8,7 @@
   while($kat = mysql_fetch_array($katq)){
      echo '<p>';
      if(isset($_SESSION['catID'])){
-        if($_SESSION['catID'] == $kat['ID']){
+        if($_GET['site'] == 'category' && $_SESSION['catID'] == $kat['ID']){
           echo '--> ';                     // irgendeine Art von highlighting
         }
      }
