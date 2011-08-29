@@ -30,7 +30,7 @@ if(isset($_SESSION['bestell_ID'])){
                                 FROM produktzubestellung, produkt, produktpreis, size
                                 WHERE produktzubestellung.bestell_ID = '".$_SESSION['bestell_ID']."'
                                 AND produktzubestellung.produkt_ID = produkt.ID
-                                AND Produkt.ID = produktpreis.produkt_ID
+                                AND produkt.ID = produktpreis.produkt_ID
                                 AND produktpreis.size = size.size
                                 AND size.size = produktzubestellung.size
                                 AND size.size = produktpreis.size
