@@ -1,16 +1,26 @@
 body {
-   margin: 0px;
-   padding: 0px;
+    background-image:url(img/bg.png);
+	background-repeat:no-repeat;
+	background-position:top center;
+	background-color:#FFF;
+	background-attachment:fixed;
+	margin:0px;
+	padding:0px;
+    font-family:Verdana, Arial, sans-serif;
+	font-size:13px;
+  
+  
+ 
   
 
-	background-color: #FFF;
+
 	
 
 	
 	margin-top:0px;
 	margin-left:auto;
 	margin-right:auto;
-	font: normal 13px Arial;	
+		
 	
 }
 #holder{
@@ -19,7 +29,7 @@ width:1200px;
 	margin-right: auto;
 	margin-top: 0px;
 	overflow:hidden;
-	
+	background-image:url(img/bg_center60.png);
 }
 
 
