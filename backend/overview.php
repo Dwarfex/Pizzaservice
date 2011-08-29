@@ -1,5 +1,6 @@
 <?php
 
+
 if(isset($_GET['complete'])){
    $bestell_ID = $_GET['complete'];
    safe_query("UPDATE ".PREFIX."bestellung SET done='1' WHERE ID=".$bestell_ID." ");
