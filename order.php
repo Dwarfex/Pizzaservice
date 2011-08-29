@@ -4,15 +4,15 @@
 if(isset($_SESSION['bestellsumme'])){
   if($_SESSION['bestellsumme'] >= $mindestbestellwert){
     if(isset($_POST['send'])){
-    	 $anrede = $_POST['anrede'];
-    	 $vorname = $_POST['vorname'];
-    	 $nachname = $_POST['nachname'];
-    	 $strasse = $_POST['strasse'];
-    	 $hausnummer = $_POST['hausnummer'];
-    	 $plz = $_POST['plz'];
-    	 $stadt = $_POST['stadt'];
-    	 $telefon = $_POST['telefon'];
-       if(isset($_POST['wish'])) $wish = $_POST['wish'];
+    	 $anrede = htmlspecialchars($_POST['anrede']);
+    	 $vorname = htmlspecialchars($_POST['vorname']);
+    	 $nachname = htmlspecialchars($_POST['nachname']);
+    	 $strasse = htmlspecialchars($_POST['strasse']);
+    	 $hausnummer = htmlspecialchars($_POST['hausnummer']);
+    	 $plz = htmlspecialchars($_POST['plz']);
+    	 $stadt = htmlspecialchars($_POST['stadt']);
+    	 $telefon = htmlspecialchars($_POST['telefon']);
+       if(isset($_POST['wish'])) htmlspecialchars($wish = $_POST['wish']);
        else $wish = '';
           
        
