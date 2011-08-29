@@ -12,7 +12,11 @@ if(isset($_SESSION['bestellsumme'])){
     	 $plz = $_POST['plz'];
     	 $stadt = $_POST['stadt'];
     	 $telefon = $_POST['telefon'];
-           
+       if(isset($_POST['wish'])) $wish = $_POST['wish'];
+       else $wish = '';
+          
+       
+       
        safe_query("UPDATE ".PREFIX."kunde SET anrede= '$anrede',
                                               vorname = '$vorname',
                                               nachname = '$nachname',
@@ -24,7 +28,7 @@ if(isset($_SESSION['bestellsumme'])){
                                               WHERE ID=".$_SESSION['ID']." ");
        
        
-       safe_query("UPDATE ".PREFIX."bestellung SET done=0 WHERE ID=".$_SESSION['bestell_ID']." ");
+       safe_query("UPDATE ".PREFIX."bestellung SET done='0', wish='$wish'  WHERE ID=".$_SESSION['bestell_ID']." ");
     
        unset($_SESSION['bestell_ID']);
     }
@@ -69,7 +73,11 @@ if(isset($_SESSION['bestellsumme'])){
           <tr>
             <td width="15%">Telefon</td>
             <td width="85%"><input type="text" name="telefon" size="30" value="'. $kunde['telefon'] .'"/></td>
-          </tr>  
+          </tr>
+          <tr>
+            <td width="15%">Sonstiger Wunsch</td>
+            <td width="85%"><textarea name="wish" cols="25" rows="5"></textarea></td>
+          </tr>   
           <tr>
             <td colspan="2"><input type="submit" name="send" value="weiter" /></td>
           </tr>
