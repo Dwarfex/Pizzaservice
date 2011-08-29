@@ -90,14 +90,14 @@ h2 {
 	
 }
 
-#admin_pad {
+#pad {
 	float:left;
 	
 	min-height: 500px;	
 	width:500px;	
 }
 
-#admin_navi{ 
+#navi{ 
 	float:left;
 	text-align:left;
 	text-height:font-size;
@@ -108,7 +108,7 @@ h2 {
 		
 }
 
-#admin_top{
+#top{
 	float:left;
 	height:393px;
 	width:950px;
@@ -120,19 +120,18 @@ h2 {
 	
 	}
 	
-#admin_headline{
+#headline{
 	float:left;
 	padding-left:650px;	
 	padding-top: 250px;
 	
 }
 	
-#admin_footer{
+#footer{
 	clear:both;
 	float:left;
 	width:1200px;
 	height:120px;
 	background-repeat:no-repeat;
 	background-image:url(img/footer.png);
-	
 	

@@ -18,17 +18,19 @@ include("_functions.php");
 
 
 <title>Mafiatorte</title>
-<!-- <link href="_stylesheet.css" rel="stylesheet" type="text/css" /> -->
+<link href="_stylesheet.css" rel="stylesheet" type="text/css" />
 
 
 
 </head>
 <body>
-<div id="container">
-<!-- Schau mal ins Backend : <a href="/backend/index.php">Klick</a> -->
+<div id="holder">
+ <div id="top"><b>Hallo und Herzlich Willkommen im BACKEND!!!</b></div>
 
-<?php include("main_navi.php")?>
-	<?php
+<!-- Schau mal ins Backend : <a href="/backend/index.php">Klick</a> -->
+<div id="navi">
+<?php include("main_navi.php")?></div>
+	<div id="pad"><?php
 	
 	
 	
@@ -38,8 +40,8 @@ include("_functions.php");
 					if(!file_exists($site.".php")) $site = "main";
 					include($site.".php");
 					?>
-
-<?php include("basket.php")?>
 </div>
+<?php include("basket.php")?><div id="footer"></div>
+</div></div>
 </body>
 </html>
