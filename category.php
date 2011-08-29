@@ -69,7 +69,7 @@ if(isset($_GET['del_extra'])){
 if(isset($_GET['edit_item'])){
 
    if(isset($_GET['item'])){
-     echo '<table width="100%" border="1" cellspacing="1" cellpadding="3">';
+     echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';
      
 //// START BASISINFOS     
      // Ausgabe der Produkt-Basisinfos (name,groesse...) 
@@ -148,7 +148,7 @@ if(isset($_GET['edit_item'])){
    
     if(mysql_num_rows($katq)>=1){         
 	   echo '<h3>Extras</h3>
-             <table width="100%" border="1" cellspacing="1" cellpadding="3">';  
+             <table width="100%" border="0" cellspacing="1" cellpadding="3">';  
              
          while($kat = mysql_fetch_array($katq)){
              echo "<tr>
@@ -162,7 +162,7 @@ if(isset($_GET['edit_item'])){
                                     AND belag.value = belagpreis.value");
               while($belag = mysql_fetch_array($belagq)){
                 echo '<tr>
-                        <td width="15%"><a href="index.php?site=category&edit_item=true&item='.$_GET['item'].'&add_extra='.$belag['ID'].' ">' . $belag["name"] . '</a></td>
+                        <td width="45%"><a href="index.php?site=category&edit_item=true&item='.$_GET['item'].'&add_extra='.$belag['ID'].' "><img src="img/add.png" width="10" height="10" alt="add" />' . $belag["name"] . '</a></td>
                         <td>' . $belag["preis"] . '</td>
                       </tr>';    
               }
@@ -214,7 +214,7 @@ if(isset($_GET['catID'])) {
   
 
 //// Produktdaten auslesen    
-  echo '<table width="100%" border="1" cellspacing="1" cellpadding="3">';
+  echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';
                                 
     $produktq = mysql_query("SELECT * FROM produkt WHERE kat_ID=" . $kat_ID . "");
     while($produkt = mysql_fetch_array($produktq)){
@@ -231,7 +231,7 @@ if(isset($_GET['catID'])) {
                while($produktpreis = mysql_fetch_array($produktpreisq)){
               
                  echo '<tr>
-                        <td>' . $produktpreis["name"] . '</a> - <a href="index.php?site=category&'.$kat_string.'&action=add&produkt='.$produktpreis['produkt_ID'].'&size='.$produktpreis['size'].'">' . $produktpreis['preis'] . ' &euro; </a></td>
+                        <td>' . $produktpreis["name"] . '</a> - <a href="index.php?site=category&'.$kat_string.'&action=add&produkt='.$produktpreis['produkt_ID'].'&size='.$produktpreis['size'].'">' . $produktpreis['preis'] . ' &euro; &nbsp;&nbsp;<img src="img/cart.png" width="14" height="14" alt="cart" /></a></td>
                        </tr>';
                }
             }
@@ -263,7 +263,7 @@ if(isset($_GET['catID'])) {
                if(mysql_num_rows($preisq)>=1){
                   while($preis = mysql_fetch_array($preisq)){  
                    echo '<tr>
-                          <td>' . $preis["name"] . ' ('. $preis["comment"] .') - <a href="index.php?site=category&action=add&produkt='.$preis['produktID'].'&size='.$preis['size'].'&edit_item=true">' . $preis['preis'] . ' &euro; </a></td>
+                          <td>' . $preis["name"] . ' ('. $preis["comment"] .') - <a href="index.php?site=category&action=add&produkt='.$preis['produktID'].'&size='.$preis['size'].'&edit_item=true">' . $preis['preis'] . ' &euro;&nbsp;&nbsp;<img src="img/cart.png" width="14" height="14" alt="cart" /> </a></td>
                          </tr>';
                   }
                }  

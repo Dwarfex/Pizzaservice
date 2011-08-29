@@ -1,25 +1,35 @@
 body {
-   margin: 0px;
-   padding: 0px;
+    background-image:url(img/bg.png);
+	background-repeat:no-repeat;
+	background-position:top center;
+	background-color:#FFF;
+	background-attachment:fixed;
+	margin:0px;
+	padding:0px;
+    font-family:Verdana, Arial, sans-serif;
+	font-size:13px;
+  
+  
+ 
   
 
-	background-color: #FFF;
+
 	
 
 	
 	margin-top:0px;
 	margin-left:auto;
 	margin-right:auto;
-	font: normal 13px Arial;	
+		
 	
 }
-#holder{
+.holder{
 width:1200px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 0px;
 	overflow:hidden;
-	
+	background-image:url(img/bg_center60.png);
 }
 
 
@@ -42,6 +52,8 @@ a.button:hover {
   color: #000000;
   text-decoration: none;
 }
+
+
 
 
 /* Font types */
@@ -80,14 +92,14 @@ h2 {
 	
 }
 
-#admin_pad {
+.pad {
 	float:left;
 	
 	min-height: 500px;	
 	width:500px;	
 }
 
-#admin_navi{ 
+.navi{ 
 	float:left;
 	text-align:left;
 	text-height:font-size;
@@ -97,32 +109,64 @@ h2 {
 	width:250px;
 		
 }
+.navi ul {
+	border:1px dashed #666;
+	width:150px;
+	margin: 2px 0px 5px 20px;
+	padding: 0px 15px 0px 15px;
+	
+}
+.navi a:hover {
+	
+	color:#333;
+	text-decoration:underline;
+		
+}
 
-#admin_top{
+.navi a {
+	
+	color:#900;
+	
+
+	
+}
+
+
+.top{
 	float:left;
 	height:393px;
-	width:950px;
+	width:1000px;
 	clear:both;
-	padding-left:250px;
-	padding-top:25px;
+	padding-left:200px;
+	padding-top:12px;
 	background-repeat:no-repeat;
 	background-image:url(img/head.png);
 	
 	}
 	
-#admin_headline{
+.headline{
 	float:left;
 	padding-left:650px;	
 	padding-top: 250px;
 	
 }
+
+.basket{
+	float:left;
+	width:320px;
+	padding-left:70px;
 	
-#admin_footer{
+}
+
+
+
+
+	
+.footer{
 	clear:both;
 	float:left;
 	width:1200px;
 	height:120px;
 	background-repeat:no-repeat;
 	background-image:url(img/footer.png);
-	
 	
