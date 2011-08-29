@@ -25,7 +25,7 @@ include("_functions.php");
 </head>
 <body>
 <div class="holder">
- <div class="top"><b>Hallo und Herzlich Willkommen im BACKEND!!!</b></div>
+ <div class="top"><b>Willkommen in der Familie.</b></div>
 
 <!-- Schau mal ins Backend : <a href="/backend/index.php">Klick</a> -->
 <div class="navi">

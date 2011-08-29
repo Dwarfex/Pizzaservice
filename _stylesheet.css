@@ -54,6 +54,8 @@ a.button:hover {
 }
 
 
+
+
 /* Font types */
 
 h1 {
@@ -107,14 +109,36 @@ h2 {
 	width:250px;
 		
 }
+.navi ul {
+	border:1px dashed #666;
+	width:150px;
+	margin: 2px 0px 5px 20px;
+	padding: 0px 15px 0px 15px;
+	
+}
+.navi a:hover {
+	
+	color:#333;
+	text-decoration:underline;
+		
+}
+
+.navi a {
+	
+	color:#900;
+	
+
+	
+}
+
 
 .top{
 	float:left;
 	height:393px;
-	width:950px;
+	width:1000px;
 	clear:both;
-	padding-left:250px;
-	padding-top:25px;
+	padding-left:200px;
+	padding-top:12px;
 	background-repeat:no-repeat;
 	background-image:url(img/head.png);
 	
