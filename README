@@ -1,1 +1,499 @@
-Mafiatorte
+-- phpMyAdmin SQL Dump
+-- version 2.6.4-pl3
+-- http://www.phpmyadmin.net
+-- 
+-- Host: rdbms.strato.de
+-- Erstellungszeit: 31. August 2011 um 23:56
+-- Server Version: 5.0.91
+-- PHP-Version: 5.2.9
+-- 
+-- Datenbank: `DB947672`
+-- 
+CREATE DATABASE `DB947672` DEFAULT CHARACTER SET latin1 COLLATE latin1_german1_ci;
+USE DB947672;
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `belag`
+-- 
+
+CREATE TABLE `belag` (
+  `ID` int(10) unsigned NOT NULL auto_increment,
+  `kat_ID` int(10) unsigned NOT NULL,
+  `value` tinyint(1) unsigned NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY  (`ID`),
+  KEY `kat_ID` (`kat_ID`),
+  KEY `value` (`value`)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1 AUTO_INCREMENT=54 ;
+
+-- 
+-- Daten für Tabelle `belag`
+-- 
+
+INSERT INTO `belag` VALUES (34, 11, 1, 'Tomatensauce');
+INSERT INTO `belag` VALUES (35, 10, 1, 'Käse');
+INSERT INTO `belag` VALUES (36, 8, 3, 'Schinken');
+INSERT INTO `belag` VALUES (37, 8, 2, 'Currychicken');
+INSERT INTO `belag` VALUES (38, 8, 2, 'Hänchenbrustfilet');
+INSERT INTO `belag` VALUES (39, 8, 1, 'Salami');
+INSERT INTO `belag` VALUES (40, 8, 1, 'Thunfisch');
+INSERT INTO `belag` VALUES (41, 10, 3, 'Gorgonzola');
+INSERT INTO `belag` VALUES (42, 10, 3, 'Mozzarella');
+INSERT INTO `belag` VALUES (43, 9, 1, 'Ananas');
+INSERT INTO `belag` VALUES (44, 9, 1, 'Broccoli');
+INSERT INTO `belag` VALUES (45, 9, 1, 'Champignons');
+INSERT INTO `belag` VALUES (46, 9, 1, 'Mais');
+INSERT INTO `belag` VALUES (47, 9, 1, 'Oliven');
+INSERT INTO `belag` VALUES (48, 9, 1, 'Paprika');
+INSERT INTO `belag` VALUES (49, 11, 1, 'Asia-Sauce(süß-sauer)');
+INSERT INTO `belag` VALUES (50, 11, 1, 'Barbecue-Sauce');
+INSERT INTO `belag` VALUES (51, 11, 1, 'Knoblauch-Sauce');
+INSERT INTO `belag` VALUES (52, 15, 1, 'Eisbergsalat');
+INSERT INTO `belag` VALUES (53, 15, 0, 'Kopfsalat');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `belagkat`
+-- 
+
+CREATE TABLE `belagkat` (
+  `ID` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+
+-- 
+-- Daten für Tabelle `belagkat`
+-- 
+
+INSERT INTO `belagkat` VALUES (8, 'Fisch & Fleisch');
+INSERT INTO `belagkat` VALUES (9, 'Obst & Gemüse');
+INSERT INTO `belagkat` VALUES (10, 'Käse');
+INSERT INTO `belagkat` VALUES (11, 'Saucen');
+INSERT INTO `belagkat` VALUES (15, 'Salat');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `belagkatzuproduktkat`
+-- 
+
+CREATE TABLE `belagkatzuproduktkat` (
+  `produktkat_ID` int(10) unsigned NOT NULL,
+  `belagkat_ID` int(10) unsigned NOT NULL,
+  KEY `produktkat_ID` (`produktkat_ID`,`belagkat_ID`),
+  KEY `belagkat_ID` (`belagkat_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- 
+-- Daten für Tabelle `belagkatzuproduktkat`
+-- 
+
+INSERT INTO `belagkatzuproduktkat` VALUES (19, 8);
+INSERT INTO `belagkatzuproduktkat` VALUES (19, 9);
+INSERT INTO `belagkatzuproduktkat` VALUES (19, 10);
+INSERT INTO `belagkatzuproduktkat` VALUES (19, 11);
+INSERT INTO `belagkatzuproduktkat` VALUES (35, 8);
+INSERT INTO `belagkatzuproduktkat` VALUES (35, 9);
+INSERT INTO `belagkatzuproduktkat` VALUES (35, 10);
+INSERT INTO `belagkatzuproduktkat` VALUES (35, 11);
+INSERT INTO `belagkatzuproduktkat` VALUES (35, 15);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `belagpreis`
+-- 
+
+CREATE TABLE `belagpreis` (
+  `size` int(10) unsigned NOT NULL,
+  `value` tinyint(4) NOT NULL,
+  `preis` float(3,2) NOT NULL,
+  KEY `size` (`size`),
+  KEY `value` (`value`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- 
+-- Daten für Tabelle `belagpreis`
+-- 
+
+INSERT INTO `belagpreis` VALUES (54, 1, 0.85);
+INSERT INTO `belagpreis` VALUES (54, 2, 1.40);
+INSERT INTO `belagpreis` VALUES (54, 3, 1.90);
+INSERT INTO `belagpreis` VALUES (55, 1, 1.05);
+INSERT INTO `belagpreis` VALUES (55, 2, 1.65);
+INSERT INTO `belagpreis` VALUES (55, 3, 2.20);
+INSERT INTO `belagpreis` VALUES (56, 1, 1.40);
+INSERT INTO `belagpreis` VALUES (56, 2, 2.50);
+INSERT INTO `belagpreis` VALUES (56, 3, 3.05);
+INSERT INTO `belagpreis` VALUES (79, 1, 0.65);
+INSERT INTO `belagpreis` VALUES (79, 2, 1.20);
+INSERT INTO `belagpreis` VALUES (79, 3, 1.50);
+INSERT INTO `belagpreis` VALUES (80, 1, 1.30);
+INSERT INTO `belagpreis` VALUES (80, 2, 2.40);
+INSERT INTO `belagpreis` VALUES (80, 3, 3.00);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `belagzubestellung`
+-- 
+
+CREATE TABLE `belagzubestellung` (
+  `ID` int(10) unsigned NOT NULL auto_increment,
+  `produktzubestell_ID` int(10) unsigned NOT NULL,
+  `belag_ID` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`ID`),
+  KEY `produktzubestell_ID` (`produktzubestell_ID`,`belag_ID`),
+  KEY `belag_ID` (`belag_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+
+-- 
+-- Daten für Tabelle `belagzubestellung`
+-- 
+
+INSERT INTO `belagzubestellung` VALUES (23, 98, 38);
+INSERT INTO `belagzubestellung` VALUES (22, 98, 40);
+INSERT INTO `belagzubestellung` VALUES (21, 98, 46);
+INSERT INTO `belagzubestellung` VALUES (25, 101, 40);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `belagzuprodukt`
+-- 
+
+CREATE TABLE `belagzuprodukt` (
+  `belag_ID` int(10) unsigned NOT NULL,
+  `produkt_ID` int(10) unsigned NOT NULL,
+  KEY `belag_ID` (`belag_ID`),
+  KEY `produkt_ID` (`produkt_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- 
+-- Daten für Tabelle `belagzuprodukt`
+-- 
+
+INSERT INTO `belagzuprodukt` VALUES (35, 49);
+INSERT INTO `belagzuprodukt` VALUES (34, 49);
+INSERT INTO `belagzuprodukt` VALUES (36, 50);
+INSERT INTO `belagzuprodukt` VALUES (35, 50);
+INSERT INTO `belagzuprodukt` VALUES (34, 50);
+INSERT INTO `belagzuprodukt` VALUES (43, 50);
+INSERT INTO `belagzuprodukt` VALUES (38, 51);
+INSERT INTO `belagzuprodukt` VALUES (43, 51);
+INSERT INTO `belagzuprodukt` VALUES (48, 51);
+INSERT INTO `belagzuprodukt` VALUES (35, 51);
+INSERT INTO `belagzuprodukt` VALUES (34, 51);
+INSERT INTO `belagzuprodukt` VALUES (49, 51);
+INSERT INTO `belagzuprodukt` VALUES (39, 52);
+INSERT INTO `belagzuprodukt` VALUES (46, 52);
+INSERT INTO `belagzuprodukt` VALUES (35, 52);
+INSERT INTO `belagzuprodukt` VALUES (34, 52);
+INSERT INTO `belagzuprodukt` VALUES (50, 52);
+INSERT INTO `belagzuprodukt` VALUES (39, 53);
+INSERT INTO `belagzuprodukt` VALUES (48, 53);
+INSERT INTO `belagzuprodukt` VALUES (35, 53);
+INSERT INTO `belagzuprodukt` VALUES (51, 53);
+INSERT INTO `belagzuprodukt` VALUES (38, 54);
+INSERT INTO `belagzuprodukt` VALUES (43, 54);
+INSERT INTO `belagzuprodukt` VALUES (45, 54);
+INSERT INTO `belagzuprodukt` VALUES (41, 54);
+INSERT INTO `belagzuprodukt` VALUES (51, 54);
+INSERT INTO `belagzuprodukt` VALUES (52, 53);
+INSERT INTO `belagzuprodukt` VALUES (52, 54);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `bestellung`
+-- 
+
+CREATE TABLE `bestellung` (
+  `ID` int(10) unsigned NOT NULL auto_increment,
+  `kunde_ID` int(11) unsigned NOT NULL,
+  `datum` date NOT NULL,
+  `wish` varchar(100) default NULL,
+  `done` tinyint(1) NOT NULL default '-1',
+  PRIMARY KEY  (`ID`),
+  KEY `kunde_ID` (`kunde_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+-- 
+-- Daten für Tabelle `bestellung`
+-- 
+
+INSERT INTO `bestellung` VALUES (1, 1, '2011-08-24', NULL, 1);
+INSERT INTO `bestellung` VALUES (2, 2, '2011-08-29', '', 1);
+INSERT INTO `bestellung` VALUES (3, 2, '2011-08-29', NULL, -1);
+INSERT INTO `bestellung` VALUES (4, 3, '2011-08-29', NULL, -1);
+INSERT INTO `bestellung` VALUES (5, 4, '2011-08-31', 'hier mein wish', 1);
+INSERT INTO `bestellung` VALUES (6, 5, '2011-08-31', '', 1);
+INSERT INTO `bestellung` VALUES (7, 6, '2011-08-31', NULL, -1);
+INSERT INTO `bestellung` VALUES (8, 4, '2011-08-31', 'Bitte geschnitten', 0);
+INSERT INTO `bestellung` VALUES (9, 7, '2011-08-31', NULL, -1);
+INSERT INTO `bestellung` VALUES (10, 4, '2011-08-31', NULL, -1);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `kunde`
+-- 
+
+CREATE TABLE `kunde` (
+  `ID` int(10) unsigned NOT NULL auto_increment,
+  `anrede` varchar(10) NOT NULL,
+  `vorname` varchar(50) NOT NULL,
+  `nachname` varchar(50) NOT NULL,
+  `strasse` varchar(100) NOT NULL,
+  `hausnummer` varchar(10) NOT NULL,
+  `plz` int(5) NOT NULL,
+  `stadt` varchar(50) NOT NULL,
+  `telefon` int(20) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+-- 
+-- Daten für Tabelle `kunde`
+-- 
+
+INSERT INTO `kunde` VALUES (1, 'Herr', 'Max', 'Muster', '', '', 0, '', 0);
+INSERT INTO `kunde` VALUES (2, '', '', '', '', '', 0, '', 0);
+INSERT INTO `kunde` VALUES (3, '', '', '', '', '', 0, '', 0);
+INSERT INTO `kunde` VALUES (4, 'Herr', 'Peter', 'Parker', 'Blubbstreet', '123', 22111, 'Hamburg', 78667);
+INSERT INTO `kunde` VALUES (5, 'LOL', '', '', '', '', 0, '', 0);
+INSERT INTO `kunde` VALUES (6, '', '', '', '', '', 0, '', 0);
+INSERT INTO `kunde` VALUES (7, '', '', '', '', '', 0, '', 0);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `produkt`
+-- 
+
+CREATE TABLE `produkt` (
+  `ID` int(10) unsigned NOT NULL auto_increment,
+  `kat_ID` int(10) unsigned NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `comment` varchar(100) NOT NULL,
+  PRIMARY KEY  (`ID`),
+  KEY `kat_ID` (`kat_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
+
+-- 
+-- Daten für Tabelle `produkt`
+-- 
+
+INSERT INTO `produkt` VALUES (39, 38, 'Coca Cola', '');
+INSERT INTO `produkt` VALUES (40, 38, 'Fanta', '');
+INSERT INTO `produkt` VALUES (41, 38, 'Mineralwasser', '');
+INSERT INTO `produkt` VALUES (42, 39, 'Flensburger', '');
+INSERT INTO `produkt` VALUES (43, 39, 'Jever', '');
+INSERT INTO `produkt` VALUES (44, 40, 'Rotwein', '');
+INSERT INTO `produkt` VALUES (45, 40, 'Weisswein', '');
+INSERT INTO `produkt` VALUES (46, 36, 'Pizzabrötchen', 'Die legendären');
+INSERT INTO `produkt` VALUES (47, 36, 'Sour Creme', '');
+INSERT INTO `produkt` VALUES (48, 36, 'Tzatziki', '');
+INSERT INTO `produkt` VALUES (49, 19, 'Grundpizza', 'Zum selbst belegen!');
+INSERT INTO `produkt` VALUES (50, 19, 'Hawai', '');
+INSERT INTO `produkt` VALUES (51, 19, 'China Town', '');
+INSERT INTO `produkt` VALUES (52, 19, 'Texas', '');
+INSERT INTO `produkt` VALUES (53, 35, 'Salami', '');
+INSERT INTO `produkt` VALUES (54, 35, 'Chicken', '');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `produktkat`
+-- 
+
+CREATE TABLE `produktkat` (
+  `ID` int(10) unsigned NOT NULL auto_increment,
+  `top_ID` int(10) unsigned default NULL,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+
+-- 
+-- Daten für Tabelle `produktkat`
+-- 
+
+INSERT INTO `produktkat` VALUES (19, NULL, 'Pizza');
+INSERT INTO `produktkat` VALUES (35, NULL, 'Croque');
+INSERT INTO `produktkat` VALUES (36, NULL, 'Extras');
+INSERT INTO `produktkat` VALUES (37, NULL, 'Getränke');
+INSERT INTO `produktkat` VALUES (38, 37, 'Softdrinks');
+INSERT INTO `produktkat` VALUES (39, 37, 'Bier');
+INSERT INTO `produktkat` VALUES (40, 37, 'Wein');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `produktpreis`
+-- 
+
+CREATE TABLE `produktpreis` (
+  `ID` int(10) unsigned NOT NULL auto_increment,
+  `produkt_ID` int(10) unsigned NOT NULL,
+  `size` int(10) unsigned NOT NULL,
+  `preis` float(3,2) NOT NULL default '0.00',
+  PRIMARY KEY  (`ID`),
+  KEY `produkt_ID` (`produkt_ID`),
+  KEY `size` (`size`)
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=latin1 AUTO_INCREMENT=140 ;
+
+-- 
+-- Daten für Tabelle `produktpreis`
+-- 
+
+INSERT INTO `produktpreis` VALUES (117, 39, 74, 1.50);
+INSERT INTO `produktpreis` VALUES (118, 39, 75, 2.20);
+INSERT INTO `produktpreis` VALUES (119, 40, 74, 1.50);
+INSERT INTO `produktpreis` VALUES (120, 40, 75, 2.20);
+INSERT INTO `produktpreis` VALUES (121, 41, 74, 1.40);
+INSERT INTO `produktpreis` VALUES (122, 41, 75, 1.90);
+INSERT INTO `produktpreis` VALUES (124, 42, 77, 2.50);
+INSERT INTO `produktpreis` VALUES (126, 43, 77, 2.50);
+INSERT INTO `produktpreis` VALUES (127, 43, 76, 2.00);
+INSERT INTO `produktpreis` VALUES (128, 44, 78, 8.90);
+INSERT INTO `produktpreis` VALUES (129, 45, 78, 8.50);
+INSERT INTO `produktpreis` VALUES (130, 46, 71, 2.20);
+INSERT INTO `produktpreis` VALUES (131, 46, 72, 2.90);
+INSERT INTO `produktpreis` VALUES (136, 47, 73, 1.05);
+INSERT INTO `produktpreis` VALUES (139, 48, 73, 1.05);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `produktzubestellung`
+-- 
+
+CREATE TABLE `produktzubestellung` (
+  `ID` int(10) unsigned NOT NULL auto_increment,
+  `bestell_ID` int(10) unsigned NOT NULL,
+  `produkt_ID` int(10) unsigned NOT NULL,
+  `size` int(10) unsigned default NULL,
+  PRIMARY KEY  (`ID`),
+  KEY `bestell_ID` (`bestell_ID`),
+  KEY `produkt_ID` (`produkt_ID`),
+  KEY `size` (`size`)
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=latin1 AUTO_INCREMENT=104 ;
+
+-- 
+-- Daten für Tabelle `produktzubestellung`
+-- 
+
+INSERT INTO `produktzubestellung` VALUES (88, 5, 44, 78);
+INSERT INTO `produktzubestellung` VALUES (98, 5, 53, 79);
+INSERT INTO `produktzubestellung` VALUES (99, 8, 53, 79);
+INSERT INTO `produktzubestellung` VALUES (100, 9, 50, 55);
+INSERT INTO `produktzubestellung` VALUES (101, 10, 49, 56);
+INSERT INTO `produktzubestellung` VALUES (102, 9, 50, 55);
+INSERT INTO `produktzubestellung` VALUES (103, 9, 40, 75);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `size`
+-- 
+
+CREATE TABLE `size` (
+  `size` int(10) unsigned NOT NULL auto_increment,
+  `produktkat_ID` int(10) unsigned NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `comment` varchar(50) default NULL,
+  `def_preis` float(3,2) unsigned default NULL,
+  PRIMARY KEY  (`size`),
+  KEY `produktkat_ID` (`produktkat_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=latin1 AUTO_INCREMENT=81 ;
+
+-- 
+-- Daten für Tabelle `size`
+-- 
+
+INSERT INTO `size` VALUES (54, 19, 'small', '24cm', 2.95);
+INSERT INTO `size` VALUES (55, 19, 'medium', '32cm', 4.10);
+INSERT INTO `size` VALUES (56, 19, 'large', '38cm', 5.95);
+INSERT INTO `size` VALUES (71, 36, '4 Stück', '', NULL);
+INSERT INTO `size` VALUES (72, 36, '6 Stück', '', NULL);
+INSERT INTO `size` VALUES (73, 36, '100ml', 'Portionsbecher', NULL);
+INSERT INTO `size` VALUES (74, 38, '0.33L', '', NULL);
+INSERT INTO `size` VALUES (75, 38, '0.5L', '', NULL);
+INSERT INTO `size` VALUES (76, 39, '0.33L', '', NULL);
+INSERT INTO `size` VALUES (77, 39, '0.5L', '', NULL);
+INSERT INTO `size` VALUES (78, 40, '0.75L', '', NULL);
+INSERT INTO `size` VALUES (79, 35, 'Halbes', '', 2.25);
+INSERT INTO `size` VALUES (80, 35, 'Ganzes', '', 3.90);
+
+-- 
+-- Constraints der exportierten Tabellen
+-- 
+
+-- 
+-- Constraints der Tabelle `belag`
+-- 
+ALTER TABLE `belag`
+  ADD CONSTRAINT `belag_ibfk_1` FOREIGN KEY (`kat_ID`) REFERENCES `belagkat` (`ID`) ON DELETE CASCADE;
+
+-- 
+-- Constraints der Tabelle `belagkatzuproduktkat`
+-- 
+ALTER TABLE `belagkatzuproduktkat`
+  ADD CONSTRAINT `belagkatzuproduktkat_ibfk_1` FOREIGN KEY (`produktkat_ID`) REFERENCES `produktkat` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `belagkatzuproduktkat_ibfk_2` FOREIGN KEY (`belagkat_ID`) REFERENCES `belagkat` (`ID`) ON DELETE CASCADE;
+
+-- 
+-- Constraints der Tabelle `belagpreis`
+-- 
+ALTER TABLE `belagpreis`
+  ADD CONSTRAINT `belagpreis_ibfk_1` FOREIGN KEY (`size`) REFERENCES `size` (`size`) ON DELETE CASCADE;
+
+-- 
+-- Constraints der Tabelle `belagzubestellung`
+-- 
+ALTER TABLE `belagzubestellung`
+  ADD CONSTRAINT `belagzubestellung_ibfk_1` FOREIGN KEY (`produktzubestell_ID`) REFERENCES `produktzubestellung` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `belagzubestellung_ibfk_2` FOREIGN KEY (`belag_ID`) REFERENCES `belag` (`ID`) ON DELETE CASCADE;
+
+-- 
+-- Constraints der Tabelle `belagzuprodukt`
+-- 
+ALTER TABLE `belagzuprodukt`
+  ADD CONSTRAINT `belagzuprodukt_ibfk_1` FOREIGN KEY (`produkt_ID`) REFERENCES `produkt` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `belagzuprodukt_ibfk_2` FOREIGN KEY (`belag_ID`) REFERENCES `belag` (`ID`) ON DELETE CASCADE;
+
+-- 
+-- Constraints der Tabelle `bestellung`
+-- 
+ALTER TABLE `bestellung`
+  ADD CONSTRAINT `bestellung_ibfk_1` FOREIGN KEY (`kunde_ID`) REFERENCES `kunde` (`ID`) ON DELETE CASCADE;
+
+-- 
+-- Constraints der Tabelle `produkt`
+-- 
+ALTER TABLE `produkt`
+  ADD CONSTRAINT `produkt_ibfk_1` FOREIGN KEY (`kat_ID`) REFERENCES `produktkat` (`ID`) ON DELETE CASCADE;
+
+-- 
+-- Constraints der Tabelle `produktpreis`
+-- 
+ALTER TABLE `produktpreis`
+  ADD CONSTRAINT `produktpreis_ibfk_1` FOREIGN KEY (`produkt_ID`) REFERENCES `produkt` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `produktpreis_ibfk_2` FOREIGN KEY (`size`) REFERENCES `size` (`size`) ON DELETE CASCADE;
+
+-- 
+-- Constraints der Tabelle `produktzubestellung`
+-- 
+ALTER TABLE `produktzubestellung`
+  ADD CONSTRAINT `produktzubestellung_ibfk_1` FOREIGN KEY (`bestell_ID`) REFERENCES `bestellung` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `produktzubestellung_ibfk_2` FOREIGN KEY (`produkt_ID`) REFERENCES `produkt` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `produktzubestellung_ibfk_3` FOREIGN KEY (`size`) REFERENCES `size` (`size`) ON DELETE CASCADE;
+
+-- 
+-- Constraints der Tabelle `size`
+-- 
+ALTER TABLE `size`
+  ADD CONSTRAINT `size_ibfk_1` FOREIGN KEY (`produktkat_ID`) REFERENCES `produktkat` (`ID`) ON DELETE CASCADE;
