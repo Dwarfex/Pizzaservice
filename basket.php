@@ -6,10 +6,10 @@ if(!isset($kat_string)){
 //// START WARENKORB  
 echo '<table  width="100%" border="0" cellspacing="2" cellpadding="5">
        <tr>
-        <td>&nbsp;</td>
-        <td>Artikel</td>
-        <td>Preis</td>
-        <td>Editieren</td>
+        <td width="5%">&nbsp;</td>
+        <td width="30%">Artikel</td>
+        <td width="20%">Preis</td>
+        <td width="35%">Editieren</td>
        </tr>';
  
 // Nur wenn bereits ein Produkt in den Warenkorb geschoben wurde                                
@@ -69,8 +69,8 @@ if(isset($_SESSION['bestell_ID'])){
         while($produkt = mysql_fetch_array($produktq)){
           
           echo '<tr>
-                  <td width="5%">'.$produkt['anzahl'].'x</td>  
-                  <td width="30%">'.$produkt['kat_name'].' ' . $produkt["produkt"] . ' - ' . $produkt["groesse"];
+                  <td>'.$produkt['anzahl'].'x</td>  
+                  <td>'.$produkt['kat_name'].' ' . $produkt["produkt"] . ' - ' . $produkt["groesse"];
                   if(isset($produkt['def_preis'])){
                     echo ' <a href="index.php?site=category&edit_item=true&item='.$produkt['produktzubestellID'].' ">Zutaten erg&auml;nzen</a>';
                   }
@@ -111,7 +111,7 @@ if(isset($_SESSION['bestell_ID'])){
 //// START EDIT         
          // Produkt hinzufuegen, eines löschen, alle Produkte mit selber ID löschen
          echo'</td> 
-              <td width="5%">' . $produkt['summe'] . ' &euro;</td>
+              <td>' . $produkt['summe'] . ' &euro;</td>
               <td><a href="index.php?site=category&'.$kat_string.'&action=add&produkt='.$produkt['ID'].'&size='.$produkt['size'].'"><img src="img/add.png" width="14" height="14" alt="add" /></a>&nbsp;
                   <a href="index.php?site=category&'.$kat_string.'&action=sub&produkt='.$produkt['produktzubestellID'].'"><img src="img/minus.png" width="14" height="14" alt="minus" /></a>&nbsp;';
                   if($produkt['anzahl'] > 1){
