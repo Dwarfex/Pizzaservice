@@ -51,7 +51,6 @@ if(isset($_GET['action'])) {
        <tr>
         <td width="15%"><b>Value</b></td>
         <td width="85%"><select name="value" size="1">
-                         <option value="0">0</option>
                          <option value="1">1</option>
                          <option value="2">2</option>
                          <option value="3">3</option> 
@@ -95,7 +94,7 @@ if(isset($_GET['action'])) {
         <td width="15%"><b>Value</b></td>
         <td width="85%"><select name="value" size="1">';
                          
-                         for($i=0; $i<4; $i++){
+                         for($i=1; $i<4; $i++){
                           echo '<option '; 
                           if($i == $belag["value"]) echo " selected ";
                           echo 'value="'. $i .'">'. $i .'</option>';
