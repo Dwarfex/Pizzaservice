@@ -143,7 +143,20 @@ if(isset($_GET['action'])){
     echo '<tr>
             <td colspan="2" align="right">summe: </td>
             <td>' . $bestellsumme . ' &euro;</td>
-          </tr></table>';
+          </tr>';
+          
+          $wishq = safe_query("SELECT wish FROM bestellung WHERE ID='".$_GET['ID']."'");// ID; kunde_ID; datum; wish; done=0
+        	
+            $wish = mysql_fetch_array($wishq);
+            if($wish['wish']!=''){
+     
+              echo '<tr>
+                      <td><b>wunsch:</b></td>
+                      <td>'.$wish['wish'].'</td>
+                    </tr>';
+          }        
+                
+        echo '</table>';
  
 
 	
