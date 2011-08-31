@@ -1,6 +1,6 @@
 <?php
 
-  $katq = mysql_query("SELECT * FROM produktkat WHERE top_ID IS NULL");
+  $katq = safe_query("SELECT * FROM produktkat WHERE top_ID IS NULL");
   echo'<li>';
   while($kat = mysql_fetch_array($katq)){
      echo '<ul><p>';

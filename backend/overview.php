@@ -13,7 +13,7 @@ if(isset($_GET['action'])){
   if ($_GET['action'] = 'show'){
 	$BestellID = $_GET['ID'];
 	
-  $kundeq = mysql_query("SELECT anrede,vorname,nachname,strasse,hausnummer,plz,stadt,telefon
+  $kundeq = safe_query("SELECT anrede,vorname,nachname,strasse,hausnummer,plz,stadt,telefon
                          FROM kunde 
                          WHERE ID=" . $_GET['kunde'] . "");
         $kunde = mysql_fetch_array($kundeq);
@@ -43,7 +43,7 @@ if(isset($_GET['action'])){
        </tr>';
                             
       // Ausgabe aller Produkte im Warenkorb
-      $produktq = mysql_query("(SELECT
+      $produktq = safe_query("(SELECT
                                 produktzubestellung.ID AS produktzubestellID,
                                 produkt.ID,
                                 '' AS kat_name,
@@ -102,7 +102,7 @@ if(isset($_GET['action'])){
               
 //// START EXTRAS         
          // Ausgabe aller Extras zum jeweiligen Produkt
-         $extraq = mysql_query("SELECT produktzubestellung.ID AS produktzubestell_ID,
+         $extraq = safe_query("SELECT produktzubestellung.ID AS produktzubestell_ID,
                                 belag.ID AS belag_ID,
                                 belag.name AS belag,
                                 
@@ -155,7 +155,7 @@ if(isset($_GET['action'])){
 
 }
 else {
-	$offeneBestellungenq = mysql_query("SELECT * FROM bestellung WHERE done='0'");// ID; kunde_ID; datum; wish; done=0
+	$offeneBestellungenq = safe_query("SELECT * FROM bestellung WHERE done='0'");// ID; kunde_ID; datum; wish; done=0
 	if(mysql_num_rows($offeneBestellungenq)>=1){
     echo '<table width="100%" border="0">
             <tr>
@@ -165,7 +165,7 @@ else {
       $i = 1;
       while($offeneBestellungen = mysql_fetch_array($offeneBestellungenq)){
   		
-    	  $kunden_infoq = mysql_query("SELECT * FROM kunde WHERE ID=".$offeneBestellungen['kunde_ID'].""); //ID; anrede; vorname; nachname; strasse; hausnummer; plz; stadt; telefon
+    	  $kunden_infoq = safe_query("SELECT * FROM kunde WHERE ID=".$offeneBestellungen['kunde_ID'].""); //ID; anrede; vorname; nachname; strasse; hausnummer; plz; stadt; telefon
     		$kunden_info = mysql_fetch_array($kunden_infoq);
     		echo'<tr>
       	  <td width="5%">'.$i.'</td>

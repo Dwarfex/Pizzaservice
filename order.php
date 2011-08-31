@@ -29,11 +29,12 @@ if(isset($_SESSION['bestellsumme'])){
        
        
        safe_query("UPDATE ".PREFIX."bestellung SET done='0', wish='$wish'  WHERE ID=".$_SESSION['bestell_ID']." ");
+       
        echo' Bestellung abgeschickt. - Je nach aktuellem Aufwand betr&auml;gt die Lieferzeit bis zu 120 Minuten :P';
        unset($_SESSION['bestell_ID']);
     }
     else{
-        $kundeq = mysql_query("SELECT *
+        $kundeq = safe_query("SELECT *
                                FROM kunde 
                                WHERE ID=" . $_SESSION['ID'] . "");
         $kunde = mysql_fetch_array($kundeq);

@@ -76,7 +76,7 @@ if(isset($_GET['edit_item'])){
      
 //// START BASISINFOS     
      // Ausgabe der Produkt-Basisinfos (name,groesse...) 
-     $produktq = mysql_query("SELECT produkt.ID,
+     $produktq = safe_query("SELECT produkt.ID,
                               produktkat.name AS kat_name,
                               produkt.name AS produkt,
                               size.size,
@@ -104,7 +104,7 @@ if(isset($_GET['edit_item'])){
               <td><b>' . $produkt["kat_name"] . ' &nbsp; '. $produkt['produkt'] .' &nbsp; '. $produkt['groesse'] .'</b></td>
              </tr>';
         // Ausgabe der gewählten Extras                
-       $extraq = mysql_query("SELECT produktzubestellung.ID AS produktzubestell_ID,
+       $extraq = safe_query("SELECT produktzubestellung.ID AS produktzubestell_ID,
                               belag.ID AS belag_ID,
                               belag.name AS belag,
                               
@@ -141,7 +141,7 @@ if(isset($_GET['edit_item'])){
                    
 //// START BELAGAUSWAHL
        // Ausgabe Kategorienamen
-       $katq = mysql_query("SELECT belagkat.ID,belagkat.name 
+       $katq = safe_query("SELECT belagkat.ID,belagkat.name 
                             FROM belagkat,belagkatzuproduktkat,produktkat,produkt 
                             WHERE produkt.ID ='".$produkt['ID']."'
                             AND produkt.kat_ID = produktkat.ID
@@ -158,7 +158,7 @@ if(isset($_GET['edit_item'])){
                     <td colspan='2'><b>" . $kat["name"] . "</b></td>
                   </tr>";
              // Ausgabe Beläge                        
-             $belagq = mysql_query("SELECT ID, preis, name  
+             $belagq = safe_query("SELECT ID, preis, name  
                                     FROM belag,belagpreis
                                     WHERE belag.kat_ID = '".$kat['ID']."'
                                     AND belagpreis.size = '".$produkt['size']."'
@@ -180,7 +180,7 @@ if(isset($_GET['catID'])) {
 
 //// Gibt es Subkategorien?
   
-  $subcatq = mysql_query("SELECT * FROM produktkat WHERE top_ID=" . $_GET['catID'] . "");
+  $subcatq = safe_query("SELECT * FROM produktkat WHERE top_ID=" . $_GET['catID'] . "");
   if(mysql_num_rows($subcatq)>=1){
      echo '<h3>';
      $i = 1;
@@ -219,13 +219,13 @@ if(isset($_GET['catID'])) {
 //// Produktdaten auslesen    
   echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';
                                 
-    $produktq = mysql_query("SELECT * FROM produkt WHERE kat_ID=" . $kat_ID . "");
+    $produktq = safe_query("SELECT * FROM produkt WHERE kat_ID=" . $kat_ID . "");
     while($produkt = mysql_fetch_array($produktq)){
       echo '<tr>
               <td><h3>' . $produkt["name"] . '</h3> ' . $produkt["comment"] . '</td>
             </tr>';
 //// Preis auslesen bei Produkten die einen Eintrag in ProduktPreis haben, (keine Pizzen)            
-            $produktpreisq = mysql_query("SELECT produkt_ID, preis, produktpreis.size, size.name 
+            $produktpreisq = safe_query("SELECT produkt_ID, preis, produktpreis.size, size.name 
                                           FROM produktpreis, size 
                                           WHERE produkt_ID=" . $produkt["ID"] . " 
                                           AND produktpreis.size = size.size
@@ -240,7 +240,7 @@ if(isset($_GET['catID'])) {
             }
             else{
 //// Preisausgabe wenn Produktkategorie standardpreis hat (pizza). Preis wird berechnet durch size.def_preis und der summe der Belagpreise in abhängigkeit zur Produktgröße                     
-                     $preisq = mysql_query("SELECT size.size, 
+                     $preisq = safe_query("SELECT size.size, 
                                             size.name AS name, 
                                             size.comment AS comment, 
                                             size.def_preis,
@@ -272,7 +272,7 @@ if(isset($_GET['catID'])) {
                }  
             }    
 //// Belagausgabe    
-        $belagq = mysql_query("SELECT belag.name, belag.ID, belagzuprodukt.belag_ID, belagzuprodukt.produkt_ID 
+        $belagq = safe_query("SELECT belag.name, belag.ID, belagzuprodukt.belag_ID, belagzuprodukt.produkt_ID 
                                FROM belag,belagzuprodukt 
                                WHERE belagzuprodukt.produkt_ID=" . $produkt['ID'] . "
                                AND belagzuprodukt.belag_ID = belag.ID");

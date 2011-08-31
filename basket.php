@@ -16,7 +16,7 @@ echo '<table  width="100%" border="0" cellspacing="2" cellpadding="5">
 if(isset($_SESSION['bestell_ID'])){
 
       // Ausgabe aller Produkte im Warenkorb
-      $produktq = mysql_query("(SELECT
+      $produktq = safe_query("(SELECT
                                 produktzubestellung.ID AS produktzubestellID,
                                 produkt.ID,
                                 '' AS kat_name,
@@ -77,7 +77,7 @@ if(isset($_SESSION['bestell_ID'])){
               
 //// START EXTRAS         
          // Ausgabe aller Extras zum jeweiligen Produkt
-         $extraq = mysql_query("SELECT produktzubestellung.ID AS produktzubestell_ID,
+         $extraq = safe_query("SELECT produktzubestellung.ID AS produktzubestell_ID,
                                 belag.ID AS belag_ID,
                                 belag.name AS belag,
                                 

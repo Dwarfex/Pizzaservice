@@ -42,7 +42,7 @@ if(isset($_GET['action'])) {
         <td width="15%"><b>Kategorie</b></td>
         <td width="85%"><select name="kat_ID" size="1">';
         
-                          $katq = mysql_query("SELECT ID,name FROM belagkat");
+                          $katq = safe_query("SELECT ID,name FROM belagkat");
                           while($kat = mysql_fetch_array($katq)){                
                             echo '<option value='. $kat["ID"] . '>'. $kat["name"] . '</option>'; 
                           }
@@ -66,7 +66,7 @@ if(isset($_GET['action'])) {
 
 	elseif($_GET['action']=="edit") {
 
-	 $belagq = mysql_query("SELECT * FROM belag WHERE ID=". $_GET["ID"] . "");
+	 $belagq = safe_query("SELECT * FROM belag WHERE ID=". $_GET["ID"] . "");
    $belag = mysql_fetch_array($belagq);
   
   echo'<h1>Belag editieren</h1>';
@@ -82,7 +82,7 @@ if(isset($_GET['action'])) {
         <td width="15%"><b>Kategorie</b></td>
         <td width="85%"><select name="kat_ID" size="1">';
         
-                          $katq = mysql_query("SELECT ID,name FROM belagkat");
+                          $katq = safe_query("SELECT ID,name FROM belagkat");
                           while($kat = mysql_fetch_array($katq)){                
                           
                             echo '<option'; 
@@ -118,7 +118,7 @@ else{ // standard auflistung aller Beläge bei keiner action
 
   echo '<a href="?site=belag&action=add">Neuen Belag anlegen</a>';
   
-  $katq = mysql_query("SELECT * FROM belagkat");
+  $katq = safe_query("SELECT * FROM belagkat");
   echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';
   while($kat = mysql_fetch_array($katq)){
    echo "<tr>
@@ -126,7 +126,7 @@ else{ // standard auflistung aller Beläge bei keiner action
         </tr>";
     
                                
-    $produktq = mysql_query("
+    $produktq = safe_query("
     SELECT * FROM belag
     WHERE kat_ID=" . $kat["ID"] . "");
     while($belag = mysql_fetch_array($produktq)){

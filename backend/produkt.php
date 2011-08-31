@@ -19,7 +19,7 @@ elseif(isset($_POST['save'])) {
    
   // Die ProduktPreis Tabelle wird mit den jeweiligen Größen der Produktkategorie gefüllt, 
   // jedoch nur wenn kein standardpreis in der size Tabelle vorhanden ist. 
-  $sizeq = mysql_query("SELECT size,def_preis FROM size WHERE produktkat_ID='$kat_ID'");
+  $sizeq = safe_query("SELECT size,def_preis FROM size WHERE produktkat_ID='$kat_ID'");
   while($size = mysql_fetch_array($sizeq)){                
     $foo = $size['size'];
     if(!isset($size['def_preis'])){
@@ -117,7 +117,7 @@ if(isset($_GET['action'])) {
         <td width="15%"><b>Kategorie</b></td>
         <td width="85%"><select name="kat_ID" size="1">';
         
-                          $katq = mysql_query("SELECT ID,name FROM produktkat");
+                          $katq = safe_query("SELECT ID,name FROM produktkat");
                           while($kat = mysql_fetch_array($katq)){                
                             echo '<option value='. $kat["ID"] . '>'. $kat["name"] . '</option>'; 
                           }
@@ -135,7 +135,7 @@ if(isset($_GET['action'])) {
 
 	elseif($_GET['action']=="edit") {
 
-	 $produktq = mysql_query("SELECT * FROM produkt WHERE ID=". $_GET["ID"] . "");
+	 $produktq = safe_query("SELECT * FROM produkt WHERE ID=". $_GET["ID"] . "");
    $produkt = mysql_fetch_array($produktq);
   
   echo'<h1>Produkt editieren</h1>';
@@ -155,7 +155,7 @@ if(isset($_GET['action'])) {
         <td width="15%"><b>Kategorie</b></td>
         <td width="85%"><select name="kat_ID" size="1">';
         
-                          $katq = mysql_query("SELECT ID,name FROM produktkat");
+                          $katq = safe_query("SELECT ID,name FROM produktkat");
                           while($kat = mysql_fetch_array($katq)){                
                           
                             echo '<option'; 
@@ -173,7 +173,7 @@ if(isset($_GET['action'])) {
 /////// ZUTATEN
     
     //auslesen der BelagZuProdukt Tabelle um checkboxen aktiv zu setzen
-    $checkq = mysql_query("SELECT belag_ID FROM belagzuprodukt WHERE produkt_ID=" . $produkt["ID"] . "");
+    $checkq = safe_query("SELECT belag_ID FROM belagzuprodukt WHERE produkt_ID=" . $produkt["ID"] . "");
     $checkarr = array();
     $i = 0;
     while($check = mysql_fetch_array($checkq)){
@@ -184,7 +184,7 @@ if(isset($_GET['action'])) {
     
     
     $produkt_ID = $produkt["ID"];
-    $katq = mysql_query("SELECT belagkat.ID,belagkat.name 
+    $katq = safe_query("SELECT belagkat.ID,belagkat.name 
       FROM belagkat,belagkatzuproduktkat,produktkat,produkt 
       WHERE produkt.ID ='$produkt_ID'
       AND produkt.kat_ID = produktkat.ID
@@ -204,7 +204,7 @@ if(isset($_GET['action'])) {
                     <td><h3>" . $kat["name"] . "</h3></td>
                   </tr>";
                                      
-              $produktq = mysql_query("SELECT * FROM belag WHERE kat_ID=" . $kat["ID"] . "");
+              $produktq = safe_query("SELECT * FROM belag WHERE kat_ID=" . $kat["ID"] . "");
               while($belag = mysql_fetch_array($produktq)){
                 
                 if(in_array($belag['ID'],$checkarr)) $checked = " checked ";
@@ -227,7 +227,7 @@ if(isset($_GET['action'])) {
       
       
       $produktkat_ID = $produkt['kat_ID'];
-      $produktpreisq = mysql_query("SELECT * FROM produktpreis WHERE produkt_ID=" . $produkt["ID"] . " ORDER BY size");
+      $produktpreisq = safe_query("SELECT * FROM produktpreis WHERE produkt_ID=" . $produkt["ID"] . " ORDER BY size");
       
       if(mysql_num_rows($produktpreisq)>=1){
           echo'<h1>Preis editieren</h1>';
@@ -240,7 +240,7 @@ if(isset($_GET['action'])) {
                   <input type="hidden" name="produktpreis_ID[]" value="'. $produktpreis['ID'] .'" />
                   <select name="size[]" size="1">';
             
-                              $sizeq = mysql_query("SELECT size,name FROM size WHERE produktkat_ID ='$produktkat_ID'");
+                              $sizeq = safe_query("SELECT size,name FROM size WHERE produktkat_ID ='$produktkat_ID'");
                               while($size = mysql_fetch_array($sizeq)){                
                               
                                 echo '<option'; 
@@ -263,7 +263,7 @@ if(isset($_GET['action'])) {
 
 ///// PREIS HINZUFUEGEN
       
-      $sizeq = mysql_query("SELECT size.size,size.name FROM size 
+      $sizeq = safe_query("SELECT size.size,size.name FROM size 
                             WHERE size.def_preis IS NULL
                             AND produktkat_ID ='".$produkt['kat_ID']."'
                             AND NOT EXISTS(SELECT produktpreis.size FROM produktpreis
@@ -304,21 +304,20 @@ else{ // standard auflistung aller Beläge bei keiner action
 
   echo '<a href="?site=produkt&action=add">Neues Produkt anlegen</a>';
   
-  $katq = mysql_query("SELECT * FROM produktkat WHERE top_ID IS NULL");
+  $katq = safe_query("SELECT * FROM produktkat WHERE top_ID IS NULL");
   echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';
   while($kat = mysql_fetch_array($katq)){
      echo "<tr>
             <td colspan='4'><h3>" . $kat["name"] . "</h3></td>
           </tr>";
-          $subkatq = mysql_query("SELECT * FROM produktkat WHERE top_ID = '".$kat['ID']."'");
+          $subkatq = safe_query("SELECT * FROM produktkat WHERE top_ID = '".$kat['ID']."'");
           while($subkat = mysql_fetch_array($subkatq)){
              echo "<tr>
                     <td colspan='4'><h3>-- " . $subkat["name"] . "</h3></td>
                   </tr>";
           
-                $produktq = mysql_query("
-                SELECT * FROM produkt
-                WHERE kat_ID=" . $subkat["ID"] . "");
+                $produktq = safe_query("SELECT * FROM produkt
+                                        WHERE kat_ID=" . $subkat["ID"] . "");
                 while($produkt = mysql_fetch_array($produktq)){
                   echo '<tr>
                           <td width="15%">' . $produkt["name"] . '</td>
@@ -329,9 +328,8 @@ else{ // standard auflistung aller Beläge bei keiner action
                 }
         }
                                
-    $produktq = mysql_query("
-    SELECT * FROM produkt
-    WHERE kat_ID=" . $kat["ID"] . "");
+    $produktq = safe_query("SELECT * FROM produkt
+                            WHERE kat_ID=" . $kat["ID"] . "");
     while($produkt = mysql_fetch_array($produktq)){
       echo '<tr>
               <td width="15%">' . $produkt["name"] . '</td>

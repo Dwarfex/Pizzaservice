@@ -131,7 +131,7 @@ if(isset($_GET['action'])) {
         <td width="85%"> <select name="top_ID" size="1">
         <option value=""></option>';
         
-                          $katq = mysql_query("SELECT ID,name FROM produktkat");
+                          $katq = safe_query("SELECT ID,name FROM produktkat");
                           while($kat = mysql_fetch_array($katq)){                
                             echo '<option value='. $kat["ID"] . '>'. $kat["name"] . '</option>'; 
                           }
@@ -140,7 +140,7 @@ if(isset($_GET['action'])) {
     </table>';
     
   
-    $belagkatq = mysql_query("SELECT * FROM belagkat");
+    $belagkatq = safe_query("SELECT * FROM belagkat");
     echo '<h3>Belagkategorien</h3>';
    echo'<table width="100%" border="0" cellspacing="1" cellpadding="3">';
      while($belagkat = mysql_fetch_array($belagkatq)){
@@ -160,7 +160,7 @@ if(isset($_GET['action'])) {
   } 
   elseif($_GET['action']=="edit") {
   		
-    $produktkatq = mysql_query("SELECT * FROM produktkat WHERE ID=". $_GET["ID"] . "");
+    $produktkatq = safe_query("SELECT * FROM produktkat WHERE ID=". $_GET["ID"] . "");
     $produktkat = mysql_fetch_array($produktkatq);
     
     echo'<h1>Produktkategorie &auml;ndern</h1>';
@@ -177,7 +177,7 @@ if(isset($_GET['action'])) {
         <td width="85%"><select name="top_ID" size="1">
         <option value=""></option>';
         
-                          $katq = mysql_query("SELECT ID,name FROM produktkat");
+                          $katq = safe_query("SELECT ID,name FROM produktkat");
                           while($kat = mysql_fetch_array($katq)){                
                           
                             echo '<option'; 
@@ -189,7 +189,7 @@ if(isset($_GET['action'])) {
     </table>';
        
  //auslesen der BelagZuProdukt Tabelle um checkboxen aktiv zu setzen
-    $checkq = mysql_query("SELECT belagkat_ID FROM belagkatzuproduktkat WHERE produktkat_ID=" . $produktkat["ID"] . "");
+    $checkq = safe_query("SELECT belagkat_ID FROM belagkatzuproduktkat WHERE produktkat_ID=" . $produktkat["ID"] . "");
     $checkarr = array();
     $i = 0;
     while($check = mysql_fetch_array($checkq)){
@@ -199,7 +199,7 @@ if(isset($_GET['action'])) {
     
     
     
-    $belagkatq = mysql_query("SELECT * FROM belagkat");
+    $belagkatq = safe_query("SELECT * FROM belagkat");
     echo '<h3>Belagkategorien</h3>';
    echo'<table width="100%" border="0" cellspacing="1" cellpadding="3">
          <input type="hidden" name="produkt_ID" value="'. $produktkat['ID'] .'" />';
@@ -218,7 +218,7 @@ if(isset($_GET['action'])) {
 	
 ///// GROESSEN EDITIEREN
        
-      $sizeq = mysql_query("SELECT * FROM size WHERE produktkat_ID=" . $produktkat["ID"] . "");
+      $sizeq = safe_query("SELECT * FROM size WHERE produktkat_ID=" . $produktkat["ID"] . "");
        if(mysql_num_rows($sizeq) >= 1){
            
            echo '<form method="post" action="index.php?site=produktkat&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
@@ -237,7 +237,7 @@ if(isset($_GET['action'])) {
                             <td width="15%"><input type="text" name="size_comment[]" size="10" value="'. $size["comment"] .'" /></td>
                             <td width="15%"><input type="text" name="size_def_preis[]" size="10" value="'. $size["def_preis"] .'" /></td>
                             <td width="70%">';
-                            $valueq = mysql_query("SELECT * FROM belagpreis WHERE size=" . $size["size"] . "");
+                            $valueq = safe_query("SELECT * FROM belagpreis WHERE size=" . $size["size"] . "");
                              if(mysql_num_rows($valueq) >= 1){ 
                                 while($value = mysql_fetch_array($valueq)){
                                    echo ' Val'.$value['value'].'  <input type="text" name="preis_val['.$i.'][]" size="10" value='.$value['preis'].' />';
@@ -283,7 +283,7 @@ else{ //Standardaufruf wenn action nicht gesetzt
     
     echo '<a href="?site=produktkat&action=add">Neue Kategorie hinzuf&uuml;gen</a>';
     
-    $katq = mysql_query("SELECT * FROM produktkat WHERE top_ID IS NULL");
+    $katq = safe_query("SELECT * FROM produktkat WHERE top_ID IS NULL");
     echo '<table width="100%" border="0" cellspacing="1" cellpadding="3">';
     while($kat = mysql_fetch_array($katq)){
      echo '<tr>
@@ -292,7 +292,7 @@ else{ //Standardaufruf wenn action nicht gesetzt
               <td align="left"><a href="?site=produktkat&delete=' . $kat["ID"] . '"> delete</a></td>
           </tr>';                          
           
-          $subkatq = mysql_query("SELECT * FROM produktkat WHERE top_ID = '".$kat['ID']."'");
+          $subkatq = safe_query("SELECT * FROM produktkat WHERE top_ID = '".$kat['ID']."'");
           while($subkat = mysql_fetch_array($subkatq)){
             echo '<tr>
                     <td width="15%">-- ' . $subkat["name"] . '</td>
