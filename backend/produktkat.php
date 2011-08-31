@@ -221,8 +221,8 @@ if(isset($_GET['action'])) {
       $sizeq = safe_query("SELECT * FROM size WHERE produktkat_ID=" . $produktkat["ID"] . "");
        if(mysql_num_rows($sizeq) >= 1){
            
-           echo '<form method="post" action="index.php?site=produktkat&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
-                 <table width="100%" border="1" cellspacing="1" cellpadding="3">
+           echo '<br><form method="post" action="index.php?site=produktkat&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
+                 <table width="100%" border="0" cellspacing="1" cellpadding="3">
                    <tr>
                      <td><b>Gr&ouml;sse</b></td>
                      <td><b>Comment</b></td>
@@ -260,7 +260,7 @@ if(isset($_GET['action'])) {
       
       echo'<h3>Gr&ouml;sse hinzuf&uuml;gen</h3>';
       echo '<form method="post" action="index.php?site=produktkat&action=edit&ID=' . $_GET['ID'] . '" id="post" name="post" enctype="multipart/form-data" ">
-       <table width="100%" border="1" cellspacing="1" cellpadding="3">
+       <table width="100%" border="0" cellspacing="1" cellpadding="3">
          <tr>
             <td width="15%">
               <input type="hidden" name="produktkat_ID" value="'. $produktkat['ID'] .'" />
