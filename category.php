@@ -265,8 +265,10 @@ if(isset($_GET['catID'])) {
                                             ORDER BY preis");
                if(mysql_num_rows($preisq)>=1){
                   while($preis = mysql_fetch_array($preisq)){  
+                   if($preis['comment']!='') $preis['comment'] = '('. $preis['comment']. ')';
+                   
                    echo '<tr>
-                          <td>' . $preis["name"] . ' ('. $preis["comment"] .') - <a href="index.php?site=category&action=add&produkt='.$preis['produktID'].'&size='.$preis['size'].'&edit_item=true">' . $preis['preis'] . ' &euro;&nbsp;&nbsp;<img src="img/cart.png" width="14" height="14" alt="cart" /> </a></td>
+                          <td>' . $preis["name"] . ' '. $preis["comment"] .' - <a href="index.php?site=category&action=add&produkt='.$preis['produktID'].'&size='.$preis['size'].'&edit_item=true">' . $preis['preis'] . ' &euro;&nbsp;&nbsp;<img src="img/cart.png" width="14" height="14" alt="cart" /> </a></td>
                          </tr>';
                   }
                }  
