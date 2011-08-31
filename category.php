@@ -277,7 +277,8 @@ if(isset($_GET['catID'])) {
         $belagq = safe_query("SELECT belag.name, belag.ID, belagzuprodukt.belag_ID, belagzuprodukt.produkt_ID 
                                FROM belag,belagzuprodukt 
                                WHERE belagzuprodukt.produkt_ID=" . $produkt['ID'] . "
-                               AND belagzuprodukt.belag_ID = belag.ID");
+                               AND belagzuprodukt.belag_ID = belag.ID
+                               ORDER BY belag.ID");
         $limit = mysql_num_rows($belagq); 
         if($limit >= 1){
            echo '<tr>
